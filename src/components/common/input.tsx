@@ -1,0 +1,30 @@
+import type { ComponentProps, ReactNode } from "react";
+interface InputProps extends ComponentProps<"input"> {
+	htmlFor: string;
+	label: string;
+	icon?: ReactNode;
+}
+
+export function Input({ htmlFor, label, icon, ...props }: InputProps) {
+	return (
+		<div className="w-full">
+			<label
+				htmlFor={htmlFor}
+				className="relative top-2 ml-2 w-fit rounded-sm bg-background font-semibold text-default"
+			>
+				{label}
+			</label>
+			<div className="flex items-center gap-2">
+				<input
+					{...props}
+					className="h-12 w-full rounded-md border-2 border-primary/50 px-2 text-xs placeholder:font-secondary placeholder:text-black/50 focus:outline-none"
+				/>
+				{icon && (
+					<button className="cursor-pointer" type="submit">
+						{icon}
+					</button>
+				)}
+			</div>
+		</div>
+	);
+}
