@@ -10,7 +10,7 @@ interface InputSelectProps extends ComponentProps<"select"> {
 	label: string;
 	htmlFor: string;
 	options: TagOptionType[];
-	errors: string | undefined;
+	errors?: string | undefined; // mudar pra obrigatorio depois
 }
 
 export function InputSelect({

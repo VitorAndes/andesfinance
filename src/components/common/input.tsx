@@ -3,7 +3,7 @@ interface InputProps extends ComponentProps<"input"> {
 	htmlFor: string;
 	label: string;
 	icon?: ReactNode;
-	errors: string | undefined;
+	errors?: string | undefined; // mudar pra obrigatorio depois
 }
 
 export function Input({ htmlFor, label, icon, errors, ...props }: InputProps) {
