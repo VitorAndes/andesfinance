@@ -36,7 +36,6 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
 	function closeModal() {
 		setIsOpen(false);
-		setModalType(null);
 		setModalData(null);
 	}
 

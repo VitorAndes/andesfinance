@@ -10,16 +10,18 @@ interface InputSelectProps extends ComponentProps<"select"> {
 	label: string;
 	htmlFor: string;
 	options: TagOptionType[];
+	errors: string | undefined;
 }
 
 export function InputSelect({
 	htmlFor,
 	label,
 	options,
+	errors,
 	...props
 }: InputSelectProps) {
 	return (
-		<>
+		<div className="w-full">
 			<label
 				htmlFor={htmlFor}
 				className="relative top-2 ml-2 w-fit rounded-sm bg-background font-semibold text-default"
@@ -42,6 +44,7 @@ export function InputSelect({
 					);
 				})}
 			</select>
-		</>
+			{errors && <span className="text-red-600">{errors}</span>}
+		</div>
 	);
 }

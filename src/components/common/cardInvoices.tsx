@@ -14,7 +14,7 @@ export function CardInvoices() {
 			payment_status: "paid",
 		},
 		{
-			expenseId: 3,
+			expenseId: 2,
 			userId: "2",
 			categoryId: 3,
 			product: "almoço",

@@ -7,23 +7,48 @@ import { CardModal } from "@/components/common/cardModal";
 import { CardMoney } from "@/components/common/cardMoney";
 import { CardSection } from "@/components/common/cardSection";
 
-import { ArrowDownCircle, ArrowUpCircle, CreditCard } from "lucide-react";
+import {
+	ArrowDownCircle,
+	ArrowUpCircle,
+	CreditCard,
+	SidebarClose,
+} from "lucide-react";
+import { useState } from "react";
 import { SideBar } from "./components/sidebar/sideBar";
 import { TableClient } from "./components/table/tableClient";
+import { useModal } from "./context/modalContext";
 import { transactionsData } from "./data/transactionsData";
 
 export function App() {
+	const { openModal } = useModal();
+	const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+
 	return (
 		<div className="flex gap-4 justify-center">
-			<SideBar />
+			<SideBar isSideBarOpen={isSideBarOpen} />
 			<div className=" flex-1 overflow-auto m-auto">
 				<header className="sticky top-0 z-10 flex h-18 flex-col justify-between gap-4 p-4 backdrop-blur-xs lg:flex-row lg:items-center">
-					<h1 className="font-semibold font-title text-default text-lg lg:text-3xl">
-						Dashboard
-					</h1>
+					<div className="flex gap-2 items-center">
+						<button
+							aria-label="close modal button"
+							className="flex size-11 items-center justify-center p-1 text-default"
+							type="button"
+							onClick={() => setIsSideBarOpen((prev) => !prev)}
+						>
+							<SidebarClose className="w-full h-full" />
+						</button>
+						<h1 className="font-semibold font-title text-default text-lg lg:text-3xl">
+							Dashboard
+						</h1>
+					</div>
+
 					<div className="flex gap-2">
-						<Button modalType={"income"}>Orçamento do mês</Button>
-						<Button modalType={"expense"}>Adicionar despesa</Button>
+						<Button modalType={"income"} onClick={() => openModal("income")}>
+							Orçamento do mês
+						</Button>
+						<Button modalType={"expense"} onClick={() => openModal("expense")}>
+							Adicionar despesa
+						</Button>
 					</div>
 				</header>
 				<main className="m-auto mt-12 space-y-12 p-2 md:p-6 lg:mt-0 2xl:max-w-7xl">

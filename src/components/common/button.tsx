@@ -1,5 +1,4 @@
-"use client";
-import { type Invoice, type ModalType, useModal } from "@/context/modalContext";
+import type { Invoice, ModalType } from "@/context/modalContext";
 import type { ComponentProps } from "react";
 
 const BUTTON_VARIANTS = {
@@ -24,12 +23,10 @@ export function Button({
 	modalData,
 	...props
 }: ButtonProps) {
-	const { openModal } = useModal();
 	return (
 		<button
 			type="button"
 			{...props}
-			onClick={() => openModal(modalType ?? null, modalData)}
 			className={`${BUTTON_VARIANTS[variant]} group relative flex w-52 flex-1 cursor-pointer items-center justify-center overflow-hidden rounded-md py-3 transition-all ${className} `}
 		>
 			<span className="relative z-10 flex items-center gap-2 font-secondary font-semibold text-xs">

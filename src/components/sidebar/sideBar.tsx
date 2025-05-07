@@ -5,16 +5,17 @@ import {
 	LayoutDashboard,
 	Linkedin,
 	Settings,
-	SidebarClose,
 } from "lucide-react";
 
-import { useState } from "react";
 import { Button } from "../common/button";
 import { SocialLink } from "../common/socialLink";
 import { NavLink } from "./navLink";
 
-export function SideBar() {
-	const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+interface SideBarProps {
+	isSideBarOpen: boolean;
+}
+
+export function SideBar({ isSideBarOpen }: SideBarProps) {
 	const { openModal } = useModal();
 
 	return (
@@ -93,14 +94,6 @@ export function SideBar() {
 					</div>
 				</div>
 			</aside>
-			<button
-				aria-label="close modal button"
-				className=" -right-10 absolute bottom-2/12 z-20 mt-4 inline-flex size-10 items-center rounded-r-md bg-default p-2 text-secondary"
-				type="button"
-				onClick={() => setIsSideBarOpen((prev) => !prev)}
-			>
-				<SidebarClose />
-			</button>
 		</div>
 	);
 }

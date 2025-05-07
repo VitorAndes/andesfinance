@@ -1,4 +1,3 @@
-"use client";
 
 import { ModalProvider } from "@/context/modalContext";
 

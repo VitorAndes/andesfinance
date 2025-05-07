@@ -1,4 +1,3 @@
-"use client";
 import type { Invoice } from "@/context/modalContext";
 import { BadgeCheck } from "lucide-react";
 import { type FormEvent, useRef } from "react";

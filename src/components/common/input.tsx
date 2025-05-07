@@ -3,9 +3,10 @@ interface InputProps extends ComponentProps<"input"> {
 	htmlFor: string;
 	label: string;
 	icon?: ReactNode;
+	errors: string | undefined;
 }
 
-export function Input({ htmlFor, label, icon, ...props }: InputProps) {
+export function Input({ htmlFor, label, icon, errors, ...props }: InputProps) {
 	return (
 		<div className="w-full">
 			<label
@@ -25,6 +26,7 @@ export function Input({ htmlFor, label, icon, ...props }: InputProps) {
 					</button>
 				)}
 			</div>
+			{errors && <span className="text-red-600">{errors}</span>}
 		</div>
 	);
 }

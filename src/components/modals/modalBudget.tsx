@@ -1,10 +1,54 @@
-"use client";
 import { useModal } from "@/context/modalContext";
+import { useMaskAmount } from "@/hooks/useMaskAmount";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 import { Button } from "../common/button";
 import { Input } from "../common/input";
 
+const schemaBudgetForm = z.object({
+	incomeDescription: z
+		.string()
+		.nonempty({ message: "Adicione uma descrição" })
+		.max(25)
+		.min(1),
+	incomeAmount: z.number().int().nonnegative(),
+	incomeTransactionDate: z.string().date("Selecione uma data"),
+});
+
+type createIncomeForm = z.infer<typeof schemaBudgetForm>;
+
 export function ModalIncome() {
 	const { closeModal } = useModal();
+
+	const {
+		register,
+		handleSubmit,
+		watch,
+		setValue,
+		reset,
+		formState: { errors },
+	} = useForm<createIncomeForm>({
+		resolver: zodResolver(schemaBudgetForm),
+		defaultValues: {
+			incomeAmount: 0,
+		},
+	});
+
+	const incomeAmount = watch("incomeAmount");
+
+	const { handleChangeMaskAmount, maskAmount } = useMaskAmount(
+		incomeAmount,
+		(amount) => setValue("incomeAmount", amount),
+	);
+
+	const onSubmitIncomeForm = (Income: createIncomeForm) => {
+		console.log(`aqui o income:${Income}`);
+		toast.success("novo saldo adicionado!");
+		reset();
+	};
+
 	return (
 		<>
 			<div className=" -top-10 absolute left-2/12 w-2/3 rounded-lg bg-default py-8 shadow shadow-default">
@@ -13,31 +57,43 @@ export function ModalIncome() {
 				</h1>
 			</div>
 
-			<form action="" className="mt-12 space-y-2">
+			<form
+				onSubmit={handleSubmit(onSubmitIncomeForm)}
+				className="mt-12 space-y-2"
+			>
 				<Input
+					errors={errors.incomeAmount?.message}
+					value={maskAmount}
+					onChange={handleChangeMaskAmount}
+					inputMode="numeric"
 					type="text"
-					id="budget"
-					name="budget"
 					placeholder="R$ 0,00"
 					htmlFor="budget"
 					label="Valor da renda"
 				/>
-				<Input htmlFor={"description"} label={"Descrição"} />
+				<Input
+					errors={errors.incomeDescription?.message}
+					{...register("incomeDescription")}
+					htmlFor={"description"}
+					label={"Descrição"}
+				/>
 
 				<Input
+					errors={errors.incomeTransactionDate?.message}
+					{...register("incomeTransactionDate")}
 					type="date"
-					id="date"
-					name="date"
 					htmlFor="date"
 					label="Inicio/Fim do ciclo"
 				/>
+				<div className="flex place-content-end mt-5 gap-4">
+					<Button variant="danger" onClick={closeModal}>
+						Cancelar
+					</Button>
+					<Button variant="ghost" type="submit">
+						Adicionar saldo
+					</Button>
+				</div>
 			</form>
-			<div className="flex place-content-end gap-4">
-				<Button variant="danger" onClick={closeModal}>
-					Cancelar
-				</Button>
-				<Button variant="ghost">Salvar</Button>
-			</div>
 		</>
 	);
 }
