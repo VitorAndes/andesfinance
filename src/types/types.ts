@@ -1,3 +1,8 @@
+export const STORAGE_KEYS = {
+	INCOMES: "income",
+	EXPENSES: "expense",
+} as const;
+
 export type PaymentType = "credit" | "debit" | "cash";
 export type InvoiceStatus = "pending" | "paid";
 
@@ -42,13 +47,8 @@ export interface Invoice {
 }
 
 export interface Income {
-	id: number;
-	userId: string;
-	category: string;
+	id: string;
 	description: string;
 	amount: number;
-	transaction_date: Date;
-	created_at: Date;
-	updated_at: Date;
-	deleted_at: Date | null;
+	transaction_date: string;
 }

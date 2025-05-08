@@ -1,4 +1,5 @@
 import { useModal } from "@/context/modalContext";
+import { handleSetIncome } from "@/function/handleLocalStorageSet";
 import { useMaskAmount } from "@/hooks/useMaskAmount";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -44,7 +45,17 @@ export function ModalIncome() {
 	);
 
 	const onSubmitIncomeForm = (Income: createIncomeForm) => {
-		console.log(`aqui o income:${Income}`);
+		console.log(`new income amount ${Income.incomeAmount}`);
+
+		const { incomeAmount, incomeDescription, incomeTransactionDate } = Income;
+
+		handleSetIncome({
+			id: crypto.randomUUID(),
+			amount: incomeAmount,
+			description: incomeDescription,
+			transaction_date: incomeTransactionDate,
+		});
+
 		toast.success("novo saldo adicionado!");
 		reset();
 	};
@@ -67,7 +78,6 @@ export function ModalIncome() {
 					onChange={handleChangeMaskAmount}
 					inputMode="numeric"
 					type="text"
-					placeholder="R$ 0,00"
 					htmlFor="budget"
 					label="Valor da renda"
 				/>
@@ -76,6 +86,7 @@ export function ModalIncome() {
 					{...register("incomeDescription")}
 					htmlFor={"description"}
 					label={"Descrição"}
+					placeholder="Descrição do saldo"
 				/>
 
 				<Input

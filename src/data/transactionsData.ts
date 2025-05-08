@@ -1,4 +1,4 @@
-import type { PaymentType } from "../types/prisma";
+import type { PaymentType } from "../types/types";
 
 export type TransactionBase = {
 	id: string;

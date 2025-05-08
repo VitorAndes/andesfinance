@@ -18,7 +18,7 @@ export function Input({ htmlFor, label, icon, errors, ...props }: InputProps) {
 			<div className="flex items-center gap-2">
 				<input
 					{...props}
-					className="h-12 w-full rounded-md border-2 border-primary/50 px-2 text-xs placeholder:font-secondary placeholder:text-black/50 focus:outline-none"
+					className="h-12 w-full rounded-md border border-primary/50 px-2 focus:outline-none placeholder:font-medium text-default/60"
 				/>
 				{icon && (
 					<button className="cursor-pointer" type="submit">

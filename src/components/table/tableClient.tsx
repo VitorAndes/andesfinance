@@ -1,7 +1,7 @@
 import { useFilter } from "@/hooks/useFilter";
 import { usePagination } from "@/hooks/usePagination";
-import type { Category } from "@/types/prisma";
 import type { Transaction } from "@/types/transaction";
+import type { Category } from "@/types/types";
 import { ListRestart } from "lucide-react";
 import { ExpenseTransaction } from "../common/cardTransaction";
 import { Input } from "../common/input";

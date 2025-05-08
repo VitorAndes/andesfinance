@@ -1,4 +1,4 @@
-import type { Invoice } from "@/types/prisma";
+import type { Invoice } from "@/types/types";
 import { Receipt } from "lucide-react";
 import { Button } from "./button";
 

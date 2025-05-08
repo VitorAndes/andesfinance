@@ -30,15 +30,15 @@ export function InputSelect({
 			</label>
 			<select
 				{...props}
-				className="h-12 w-full rounded-md border-2 border-primary/50 px-2 text-xs placeholder:text-black/25 focus:outline-none"
+				className="h-12 w-full rounded-md border text-default/60 border-primary/50 px-2 text-xs focus:outline-none"
 			>
-				<option value="" disabled className="bg-secondary p-4 font-secondary">
+				<option value="" disabled>
 					Escolha uma opção
 				</option>
 
 				{options.map(({ name, id, value }) => {
 					return (
-						<option key={id} value={value}>
+						<option key={id} value={value ?? name}>
 							{name}
 						</option>
 					);

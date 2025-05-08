@@ -13,15 +13,26 @@ import {
 	CreditCard,
 	SidebarClose,
 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { SideBar } from "./components/sidebar/sideBar";
 import { TableClient } from "./components/table/tableClient";
 import { useModal } from "./context/modalContext";
 import { transactionsData } from "./data/transactionsData";
+import { getAllIncome } from "./function/handleLocalStorageSet";
 
 export function App() {
 	const { openModal } = useModal();
 	const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+
+	const allIncomeAmount = useMemo(() => {
+		const allIncome = getAllIncome();
+		const allIncomeAmount = allIncome.reduce(
+			(acc, income) => acc + income.amount,
+			0,
+		);
+
+		return (allIncomeAmount / 100).toLocaleString("pt-BR");
+	}, []);
 
 	return (
 		<div className="flex gap-4 justify-center">
@@ -56,7 +67,7 @@ export function App() {
 						<CardMoney
 							icon={<ArrowUpCircle className="text-emerald-400" />}
 							title={"Disponível no mês"}
-							value={"totalBalance"}
+							value={allIncomeAmount}
 						/>
 						<CardMoney
 							icon={<ArrowDownCircle className="text-red-400" />}

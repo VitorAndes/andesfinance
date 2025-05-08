@@ -1,4 +1,4 @@
-import type { InvoiceStatus } from "@/types/prisma";
+import type { InvoiceStatus } from "@/types/types";
 import { type ReactNode, createContext, useContext, useState } from "react";
 
 export type ModalType = "settings" | "income" | "expense" | "invoice" | null;
