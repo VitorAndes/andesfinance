@@ -1,4 +1,5 @@
 import { useModal } from "@/context/modalContext";
+import { handleSetExpense } from "@/function/handleExpenseLocalStorage";
 import { useMaskAmount } from "@/hooks/useMaskAmount";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,35 +10,47 @@ import { Input } from "../common/input";
 import { InputSelect } from "../common/inputSelect";
 
 const methodOptions = [
-	{ id: 1, name: "Crédito", value: "credit" },
-	{ id: 2, name: "Débito", value: "debit" },
-	{ id: 3, name: "Dinheiro", value: "cash" },
-] satisfies { id: number; name: string; value: string }[];
+	{ name: "Crédito" },
+	{ name: "Débito" },
+	{ name: "Dinheiro" },
+] satisfies { name: string }[];
 
 const tagOptions = [
 	{
-		id: 1,
 		name: "alimentação",
-		value: "alimentação",
 	},
 	{
-		id: 2,
 		name: "transporte",
-		value: "transporte",
 	},
-] satisfies { id: number; name: string; value: string }[];
+] satisfies { name: string }[];
 
 const categoryEnum = ["alimentação", "transporte"] as const;
+const paymentMethodEnum = ["Débito", "Crédito", "Dinheiro"] as const;
+type PaymentMethod = (typeof paymentMethodEnum)[number];
+type categoryEnum = (typeof categoryEnum)[number];
 
 const schemaExpenseForm = z.object({
-	expenseAmount: z.number().int().nonnegative(),
+	expenseAmount: z
+		.number()
+		.int()
+		.nonnegative()
+		.positive({ message: "O valor deve ser maior que zero " }),
 	expenseDescription: z
 		.string()
 		.nonempty({ message: "Adicione uma descrição" })
 		.max(25)
 		.min(1),
-	expensePaymentMethod: z.enum(["debit", "credit", "cash"]),
-	expenseCategory: z.enum(categoryEnum),
+	expensePaymentMethod: z
+		.string()
+		.refine((val) => paymentMethodEnum.includes(val as PaymentMethod), {
+			message: "Selecione uma forma de pagamento",
+		}),
+
+	expenseCategory: z
+		.string()
+		.refine((val) => categoryEnum.includes(val as categoryEnum), {
+			message: "Selecione uma categoria",
+		}),
 	expenseTransactionDate: z.string().date("selecione uma data"),
 });
 
@@ -54,9 +67,6 @@ export function ModalSpend() {
 		formState: { errors },
 	} = useForm<createExpenseForm>({
 		resolver: zodResolver(schemaExpenseForm),
-		defaultValues: {
-			expenseAmount: 0,
-		},
 	});
 
 	const expenseAmount = watch("expenseAmount");
@@ -65,11 +75,25 @@ export function ModalSpend() {
 		expenseAmount,
 		(amount) => setValue("expenseAmount", amount),
 	);
+	function createId() {
+		return Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+	}
 
-	const onSubmitExpenseForm = (Expense: createExpenseForm) => {
-		console.log(
-			`aqui o expense: ${Expense.expensePaymentMethod}, ${Expense.expenseTransactionDate}, ${Expense.expenseAmount},${Expense.expenseCategory}, ${Expense.expenseDescription}`,
-		);
+	const onSubmitExpenseForm = ({
+		expenseCategory,
+		expenseDescription,
+		expensePaymentMethod,
+		expenseTransactionDate,
+	}: createExpenseForm) => {
+		handleSetExpense({
+			expenseId: createId(),
+			amount: expenseAmount,
+			category: expenseCategory,
+			payment_type: expensePaymentMethod,
+			product: expenseDescription,
+			transaction_date: expenseTransactionDate,
+		});
+
 		toast.success("nova expense");
 		reset();
 	};

@@ -1,7 +1,7 @@
 import { type Income, STORAGE_KEYS } from "@/types/types";
 
 export function handleSetIncome({
-	id,
+	incomeId,
 	amount,
 	description,
 	transaction_date,
@@ -11,7 +11,7 @@ export function handleSetIncome({
 	const allIncome: Income[] = allIncomeLocal ? JSON.parse(allIncomeLocal) : [];
 
 	allIncome.push({
-		id,
+		incomeId,
 		amount,
 		description,
 		transaction_date,
@@ -24,6 +24,5 @@ export function handleSetIncome({
 export function getAllIncome() {
 	const allIncomeLocal = localStorage.getItem(STORAGE_KEYS.INCOMES);
 	const allIncome: Income[] = allIncomeLocal ? JSON.parse(allIncomeLocal) : [];
-
 	return allIncome;
 }

@@ -13,31 +13,45 @@ import {
 	CreditCard,
 	SidebarClose,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { SideBar } from "./components/sidebar/sideBar";
 import { TableClient } from "./components/table/tableClient";
 import { useModal } from "./context/modalContext";
 import { transactionsData } from "./data/transactionsData";
-import { getAllIncome } from "./function/handleLocalStorageSet";
+import { getAllExpenses } from "./function/handleExpenseLocalStorage";
+import { getAllIncome } from "./function/handleIncomeLocalStorage";
 
 export function App() {
 	const { openModal } = useModal();
 	const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+	const [allIncome, setAllIncome] = useState("");
+	const [allExpense, setAllExpense] = useState("");
 
-	const allIncomeAmount = useMemo(() => {
+	useEffect(() => {
 		const allIncome = getAllIncome();
 		const allIncomeAmount = allIncome.reduce(
 			(acc, income) => acc + income.amount,
 			0,
 		);
+		const incomeAmount = (allIncomeAmount / 100).toLocaleString("pt-BR");
+		setAllIncome(incomeAmount);
+	});
 
-		return (allIncomeAmount / 100).toLocaleString("pt-BR");
-	}, []);
+	useEffect(() => {
+		const allExpense = getAllExpenses();
+		const allExpenseAmount = allExpense.reduce(
+			(acc, expense) => acc + expense.amount,
+			0,
+		);
+
+		const expenseAmount = (allExpenseAmount / 100).toLocaleString("pt-BR");
+		setAllExpense(expenseAmount);
+	});
 
 	return (
-		<div className="flex gap-4 justify-center">
+		<div className="flex min-h-screen">
 			<SideBar isSideBarOpen={isSideBarOpen} />
-			<div className=" flex-1 overflow-auto m-auto">
+			<div className=" flex-1 overflow-auto h-screen ">
 				<header className="sticky top-0 z-10 flex h-18 flex-col justify-between gap-4 p-4 backdrop-blur-xs lg:flex-row lg:items-center">
 					<div className="flex gap-2 items-center">
 						<button
@@ -67,12 +81,12 @@ export function App() {
 						<CardMoney
 							icon={<ArrowUpCircle className="text-emerald-400" />}
 							title={"Disponível no mês"}
-							value={allIncomeAmount}
+							value={allIncome}
 						/>
 						<CardMoney
 							icon={<ArrowDownCircle className="text-red-400" />}
 							title={"Gasto mensal atual"}
-							value={"totalExpense"}
+							value={allExpense}
 						/>
 						<CardMoney
 							icon={<CreditCard className="text-orange-400" />}
@@ -100,7 +114,10 @@ export function App() {
 							className="lg:col-span-2"
 							title={"Relátorio de transações"}
 						>
-							<TableClient transactions={transactionsData} categories={[]} />
+							<TableClient
+								transactions={transactionsData}
+								categories={[{ name: "alimentação" }]}
+							/>
 						</CardSection>
 						<CardSection className="lg:col-span-1" title={"Faturas"}>
 							<CardInvoices />

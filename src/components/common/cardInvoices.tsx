@@ -1,8 +1,11 @@
+import { useModal } from "@/context/modalContext";
 import type { Invoice } from "@/types/types";
 import { Receipt } from "lucide-react";
 import { Button } from "./button";
 
 export function CardInvoices() {
+	const { openModal } = useModal();
+
 	const invoices: Invoice[] = [
 		{
 			expenseId: 3,
@@ -19,28 +22,32 @@ export function CardInvoices() {
 			categoryId: 3,
 			product: "almoço",
 			amount: 12.21,
-			transaction_date: "01/02/2004",
+			transaction_date: "01/02/2030",
+			payment_status: "pending",
+		},
+		{
+			expenseId: 5,
+			userId: "2",
+			categoryId: 3,
+			product: "seila",
+			amount: 333.33,
+			transaction_date: "01/02/2010",
+			payment_status: "pending",
+		},
+		{
+			expenseId: 4,
+			userId: "2",
+			categoryId: 3,
+			product: "cinema",
+			amount: 33.3321,
+			transaction_date: "01/02/2020",
 			payment_status: "pending",
 		},
 	];
 
-	function mapInvoiceToUI(invoice: (typeof invoices)[number]): Invoice {
-		return {
-			userId: invoice.userId,
-			expenseId: invoice.expenseId,
-			product: invoice.product,
-			categoryId: invoice.categoryId,
-			transaction_date: invoice.transaction_date,
-			amount: invoice.amount,
-			payment_status: invoice.payment_status === "paid" ? "paid" : "pending",
-		};
-	}
-
 	return (
 		<>
 			{invoices.map((invoice) => {
-				const uiInvoice = mapInvoiceToUI(invoice);
-
 				return (
 					<div
 						key={invoice.expenseId}
@@ -63,7 +70,7 @@ export function CardInvoices() {
 								</div>
 								<span className="font-secondary text-default/70">
 									{invoice.payment_status === "pending" &&
-										`Vencimento - ${new Date(invoice.transaction_date).toLocaleDateString()}`}
+										`Vencimento - ${invoice.transaction_date}`}
 								</span>
 							</div>
 							<div className="flex flex-col items-end justify-between gap-2">
@@ -73,8 +80,7 @@ export function CardInvoices() {
 											variant="ghost"
 											type="button"
 											className="w-full"
-											modalType={"invoice"}
-											modalData={uiInvoice}
+											onClick={() => openModal("invoice", invoice)}
 										>
 											Pagar
 										</Button>

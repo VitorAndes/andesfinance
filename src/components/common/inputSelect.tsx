@@ -1,9 +1,7 @@
 import type { ComponentProps } from "react";
 
 type TagOptionType = {
-	id: number;
 	name: string;
-	value?: string;
 };
 
 interface InputSelectProps extends ComponentProps<"select"> {
@@ -30,15 +28,16 @@ export function InputSelect({
 			</label>
 			<select
 				{...props}
-				className="h-12 w-full rounded-md border text-default/60 border-primary/50 px-2 text-xs focus:outline-none"
+				className="h-12 w-full rounded-md border border-primary/50 px-2 text-xs focus:outline-none"
+				defaultValue={""}
 			>
 				<option value="" disabled>
 					Escolha uma opção
 				</option>
 
-				{options.map(({ name, id, value }) => {
+				{options.map(({ name }) => {
 					return (
-						<option key={id} value={value ?? name}>
+						<option key={name} value={name}>
 							{name}
 						</option>
 					);

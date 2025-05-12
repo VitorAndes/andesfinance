@@ -21,13 +21,13 @@ export function SideBar({ isSideBarOpen }: SideBarProps) {
 	return (
 		<div className="relative h-dvh">
 			<aside
-				className={`flex h-full flex-col gap-5 bg-default transition-all lg:h-screen ${
+				className={`flex h-full flex-col gap-5 bg-default  transition-all lg:h-screen ${
 					isSideBarOpen
 						? "=translate-x-0 pointer-events-auto h-full w-64 p-4 md:w-80"
 						: "-translate-x-2/2 pointer-events-none w-0 overflow-hidden p-0"
 				}`}
 			>
-				<h1 className="border-secondary/60 border-b pb-4 font-semibold font-title text-secondary md:text-3xl">
+				<h1 className="border-secondary/60 border-b pb-4 text-center font-primary text-secondary md:text-3xl">
 					AndesFinance
 				</h1>
 
@@ -54,28 +54,6 @@ export function SideBar({ isSideBarOpen }: SideBarProps) {
 					Buy me a coffee <Coffee />
 				</Button>
 				<div className="flex flex-col gap-2">
-					<button
-						type="button"
-						className="flex w-full items-center gap-2 truncate rounded-md bg-primary p-3"
-					>
-						<img
-							src="https://avatars.githubusercontent.com/u/104475906?v=4"
-							width={40}
-							height={40}
-							className="rounded-full"
-							alt="Avatar"
-						/>
-
-						<div className="flex flex-col overflow-hidden text-start">
-							<h1 className="truncate font-secondary font-semibold text-secondary text-sm">
-								Vitor andes dos santos
-							</h1>
-							<p className="truncate font-secondary text-secondary/80 text-xs">
-								vitor.andes.santos04@gmail.com
-							</p>
-						</div>
-					</button>
-
 					<div className="flex gap-2">
 						<SocialLink
 							target="_blank"

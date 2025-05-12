@@ -1,7 +1,7 @@
 import { useFilter } from "@/hooks/useFilter";
 import { usePagination } from "@/hooks/usePagination";
 import type { Transaction } from "@/types/transaction";
-import type { Category } from "@/types/types";
+
 import { ListRestart } from "lucide-react";
 import { ExpenseTransaction } from "../common/cardTransaction";
 import { Input } from "../common/input";
@@ -10,26 +10,22 @@ import { PAGINATION_CONFIG, TablePagination } from "./tablePagination";
 
 interface TableClientProps {
 	transactions: Transaction[];
-	categories: Category[];
+	categories: { name: string }[];
 }
 
 const methodOptions = [
-	{ id: 1, name: "Crédito", value: "credit" },
-	{ id: 2, name: "Débito", value: "debit" },
-	{ id: 3, name: "Dinheiro", value: "cash" },
+	{ id: 1, name: "Crédito", value: "Crédito" },
+	{ id: 2, name: "Débito", value: "Débito" },
+	{ id: 3, name: "Dinheiro", value: "Dinheiro" },
 ] satisfies { id: number; name: string; value: string }[];
 const transactionTypeOptions = [
 	{
-		id: 1,
 		name: "Recebimentos",
-		value: "income",
 	},
 	{
-		id: 2,
 		name: "Compras",
-		value: "expense",
 	},
-] satisfies { id: number; name: string; value: string }[];
+] satisfies { name: string }[];
 
 export function TableClient({ transactions, categories }: TableClientProps) {
 	const {
@@ -61,6 +57,7 @@ export function TableClient({ transactions, categories }: TableClientProps) {
 		setSearchName("");
 		setSearchTag("");
 		setSearchType("");
+		setCurrentPage(1);
 	}
 
 	return (
@@ -127,54 +124,57 @@ export function TableClient({ transactions, categories }: TableClientProps) {
 					/>
 				</div>
 				<button
-					className="lg:-top-11 -top-9 absolute right-0 flex cursor-pointer items-center gap-2 text-xs active:text-primary lg:text-base"
+					className="lg:-top-11 -top-9 absolute right-0 flex cursor-pointer items-center gap-2 text-xs active:text-primary lg:text-base font-secondary"
 					onClick={resetarFiltro}
 					type="button"
 				>
-					limpar filtros
 					<ListRestart />
+					Limpar filtros
 				</button>
 			</div>
-			<div className="flex w-full flex-col gap-2">
-				<div className="flex flex-col gap-2">
-					{paginatedItems.length === 0 ? (
-						<div className="flex ">
-							<div className="flex-1 py-4 text-center font-secondary">
-								Nenhuma transação encontrada
+
+			<div className="flex flex-col justify-between h-full gap-5">
+				<div className="flex w-full flex-col gap-2">
+					<div className="flex flex-col gap-2">
+						{paginatedItems.length === 0 ? (
+							<div className="flex ">
+								<div className="flex-1 py-4 text-center font-secondary">
+									Nenhuma transação encontrada
+								</div>
 							</div>
-						</div>
-					) : (
-						paginatedItems.map((transaction) =>
-							transaction.type === "expense" ? (
-								<ExpenseTransaction
-									key={transaction.id}
-									type={"expense"}
-									local={transaction.name}
-									tag={transaction.tag}
-									paymentDate={transaction.paymentDate}
-									amount={transaction.amount}
-									paymentMethod={transaction.paymentMethod}
-								/>
-							) : (
-								<ExpenseTransaction
-									key={transaction.id}
-									type={"income"}
-									local={transaction.name}
-									tag={transaction.tag}
-									paymentDate={transaction.paymentDate}
-									amount={transaction.amount}
-								/>
-							),
-						)
-					)}
+						) : (
+							paginatedItems.map((transaction) =>
+								transaction.type === "expense" ? (
+									<ExpenseTransaction
+										key={transaction.id}
+										type={"expense"}
+										local={transaction.name}
+										tag={transaction.tag}
+										paymentDate={transaction.paymentDate}
+										amount={transaction.amount}
+										paymentMethod={transaction.paymentMethod}
+									/>
+								) : (
+									<ExpenseTransaction
+										key={transaction.id}
+										type={"income"}
+										local={transaction.name}
+										tag={transaction.tag}
+										paymentDate={transaction.paymentDate}
+										amount={transaction.amount}
+									/>
+								),
+							)
+						)}
+					</div>
 				</div>
+				<TablePagination
+					pageNumber={currentPage}
+					totalPages={totalPages}
+					totalRows={totalItems}
+					goToPage={setCurrentPage}
+				/>
 			</div>
-			<TablePagination
-				pageNumber={currentPage}
-				totalPages={totalPages}
-				totalRows={totalItems}
-				goToPage={setCurrentPage}
-			/>
 		</>
 	);
 }

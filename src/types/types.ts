@@ -3,7 +3,7 @@ export const STORAGE_KEYS = {
 	EXPENSES: "expense",
 } as const;
 
-export type PaymentType = "credit" | "debit" | "cash";
+export type PaymentType = "Débito" | "Crédito" | "Dinheiro";
 export type InvoiceStatus = "pending" | "paid";
 
 export interface User {
@@ -17,23 +17,13 @@ export interface User {
 	deleted_at: Date | null;
 }
 
-export interface Category {
-	id: number;
-	name: string;
-}
-
 export interface Expense {
-	expenseId: number;
-	userId: string;
-	categoryId: number;
+	expenseId: string;
 	product: string;
 	amount: number;
-	transaction_date: Date;
-	payment_type: PaymentType;
-	created_at: Date;
-	updated_at: Date;
-	deleted_at: Date | null;
-	category: Pick<Category, "name">;
+	transaction_date: string;
+	payment_type: string;
+	category: string;
 }
 
 export interface Invoice {
@@ -47,7 +37,7 @@ export interface Invoice {
 }
 
 export interface Income {
-	id: string;
+	incomeId: string;
 	description: string;
 	amount: number;
 	transaction_date: string;

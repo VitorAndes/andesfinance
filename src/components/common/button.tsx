@@ -13,14 +13,14 @@ interface ButtonProps extends ComponentProps<"button"> {
 	variant?: ButtonVariant;
 	modalType?: ModalType;
 	modalData?: Invoice;
+	buttonModal?: boolean;
 }
 
 export function Button({
 	children,
 	variant = "default",
 	className,
-	modalType,
-	modalData,
+
 	...props
 }: ButtonProps) {
 	return (

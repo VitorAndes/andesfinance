@@ -30,7 +30,6 @@ export function TablePagination({
 	const { firstRow, lastRow } = getRowRange();
 	const pageButtons = Array.from({ length: totalPages }, (_, i) => i + 1);
 
-	// Button styles
 	const baseButtonStyle =
 		"p-1 px-3 rounded-md transition-all font-secondary font-semibold cursor-pointer";
 	const activeButtonStyle = `${baseButtonStyle} bg-primary shadow-inner text-secondary shadow-default/20`;
@@ -39,7 +38,7 @@ export function TablePagination({
 		"cursor-pointer hover:bg-primary hover:text-secondary rounded-md transition-all p-1 ";
 
 	return (
-		<footer className="flex w-full flex-wrap justify-center gap-4 md:items-center md:justify-between ">
+		<footer className="flex w-full flex-wrap justify-center gap-4 md:items-center md:justify-between">
 			<div className="flex items-center gap-2">
 				<button
 					type="button"

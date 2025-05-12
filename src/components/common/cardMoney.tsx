@@ -12,7 +12,7 @@ export function CardMoney(CardMoney: CardMoneyProps) {
 				{CardMoney.title} {CardMoney.icon}
 			</h1>
 			<p className="font-secondary font-semibold text-default md:text-2xl">
-				R$ {CardMoney.value}
+				R$ {CardMoney.value ? CardMoney.value : 0}
 			</p>
 		</div>
 	);

@@ -1,5 +1,5 @@
 import { useModal } from "@/context/modalContext";
-import { handleSetIncome } from "@/function/handleLocalStorageSet";
+import { handleSetIncome } from "@/function/handleIncomeLocalStorage";
 import { useMaskAmount } from "@/hooks/useMaskAmount";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -44,13 +44,16 @@ export function ModalIncome() {
 		(amount) => setValue("incomeAmount", amount),
 	);
 
-	const onSubmitIncomeForm = (Income: createIncomeForm) => {
-		console.log(`new income amount ${Income.incomeAmount}`);
+	function createId() {
+		return Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+	}
 
-		const { incomeAmount, incomeDescription, incomeTransactionDate } = Income;
-
+	const onSubmitIncomeForm = ({
+		incomeDescription,
+		incomeTransactionDate,
+	}: createIncomeForm) => {
 		handleSetIncome({
-			id: crypto.randomUUID(),
+			incomeId: createId(),
 			amount: incomeAmount,
 			description: incomeDescription,
 			transaction_date: incomeTransactionDate,

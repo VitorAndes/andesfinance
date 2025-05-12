@@ -17,6 +17,7 @@ createRoot(document.getElementById("root")!).render(
 					className: "p-5 text-base",
 				}}
 			/>
+
 			<App />
 		</ModalProviders>
 	</StrictMode>,
