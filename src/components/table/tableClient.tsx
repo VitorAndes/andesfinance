@@ -14,10 +14,10 @@ interface TableClientProps {
 }
 
 const methodOptions = [
-	{ id: 1, name: "Crédito", value: "Crédito" },
-	{ id: 2, name: "Débito", value: "Débito" },
-	{ id: 3, name: "Dinheiro", value: "Dinheiro" },
-] satisfies { id: number; name: string; value: string }[];
+	{ name: "Crédito" },
+	{ name: "Débito" },
+	{ name: "Dinheiro" },
+] satisfies { name: string }[];
 const transactionTypeOptions = [
 	{
 		name: "Recebimentos",

@@ -8,36 +8,36 @@ export function CardInvoices() {
 
 	const invoices: Invoice[] = [
 		{
-			expenseId: 3,
-			userId: "2",
-			categoryId: 3,
+			invoiceId: "3",
+
+			category: "alimentação",
 			product: "almoço",
 			amount: 12.21,
 			transaction_date: "01/02/2004",
 			payment_status: "paid",
 		},
 		{
-			expenseId: 2,
-			userId: "2",
-			categoryId: 3,
+			invoiceId: "2",
+
+			category: "alimentação",
 			product: "almoço",
 			amount: 12.21,
 			transaction_date: "01/02/2030",
 			payment_status: "pending",
 		},
 		{
-			expenseId: 5,
-			userId: "2",
-			categoryId: 3,
+			invoiceId: "5",
+
+			category: "alimentação",
 			product: "seila",
 			amount: 333.33,
 			transaction_date: "01/02/2010",
 			payment_status: "pending",
 		},
 		{
-			expenseId: 4,
-			userId: "2",
-			categoryId: 3,
+			invoiceId: "4",
+
+			category: "alimentação",
 			product: "cinema",
 			amount: 33.3321,
 			transaction_date: "01/02/2020",
@@ -50,7 +50,7 @@ export function CardInvoices() {
 			{invoices.map((invoice) => {
 				return (
 					<div
-						key={invoice.expenseId}
+						key={invoice.invoiceId}
 						className="flex w-full items-start gap-4 rounded-md border border-secondary px-4 py-6 shadow-2xs shadow-default"
 					>
 						<Receipt
@@ -65,7 +65,7 @@ export function CardInvoices() {
 											: "Fatura paga"}
 									</span>
 									<h1 className="font-secondary font-semibold text-default">
-										{invoice.product} - {invoice.categoryId}
+										{invoice.product} - {invoice.category}
 									</h1>
 								</div>
 								<span className="font-secondary text-default/70">

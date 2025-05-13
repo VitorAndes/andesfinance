@@ -22,7 +22,6 @@ export function ModalSettings() {
 				<Button
 					variant={activeTab === Tab.Category ? "default" : "ghost"}
 					onClick={() => setActiveTab(Tab.Category)}
-					modalType={"settings"}
 				>
 					Category
 				</Button>

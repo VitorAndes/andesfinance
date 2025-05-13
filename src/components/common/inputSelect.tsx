@@ -22,13 +22,13 @@ export function InputSelect({
 		<div className="w-full">
 			<label
 				htmlFor={htmlFor}
-				className="relative top-2 ml-2 w-fit rounded-sm bg-background font-semibold text-default"
+				className="relative top-2 ml-2 w-fit rounded-sm bg-background font-semibold text-default font-secondary"
 			>
 				{label}
 			</label>
 			<select
 				{...props}
-				className="h-12 w-full rounded-md border border-primary/50 px-2 text-xs focus:outline-none"
+				className="h-12 w-full rounded-md border border-primary/50 px-2 text-xs focus:outline-none font-secondary"
 				defaultValue={""}
 			>
 				<option value="" disabled>

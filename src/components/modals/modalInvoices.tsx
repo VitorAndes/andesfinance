@@ -1,4 +1,4 @@
-import type { Invoice } from "@/context/modalContext";
+import type { Invoice } from "@/types/types";
 import { BadgeCheck } from "lucide-react";
 import { type FormEvent, useRef } from "react";
 import { Input } from "../common/input";

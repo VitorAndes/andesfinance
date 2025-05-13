@@ -11,7 +11,7 @@ export function Input({ htmlFor, label, icon, errors, ...props }: InputProps) {
 		<div className="w-full">
 			<label
 				htmlFor={htmlFor}
-				className="relative top-2 ml-2 w-fit rounded-sm bg-background font-semibold text-default"
+				className="relative top-2 ml-2 w-fit rounded-sm bg-background font-semibold text-default font-secondary"
 			>
 				{label}
 			</label>

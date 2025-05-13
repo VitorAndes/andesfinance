@@ -7,46 +7,40 @@ import { CardModal } from "@/components/common/cardModal";
 import { CardMoney } from "@/components/common/cardMoney";
 import { CardSection } from "@/components/common/cardSection";
 
+import { useLiveQuery } from "dexie-react-hooks";
 import {
 	ArrowDownCircle,
 	ArrowUpCircle,
 	CreditCard,
 	SidebarClose,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SideBar } from "./components/sidebar/sideBar";
 import { TableClient } from "./components/table/tableClient";
 import { useModal } from "./context/modalContext";
 import { transactionsData } from "./data/transactionsData";
-import { getAllExpenses } from "./function/handleExpenseLocalStorage";
-import { getAllIncome } from "./function/handleIncomeLocalStorage";
+import { db } from "./dexie/db";
 
 export function App() {
 	const { openModal } = useModal();
 	const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-	const [allIncome, setAllIncome] = useState("");
-	const [allExpense, setAllExpense] = useState("");
 
-	useEffect(() => {
-		const allIncome = getAllIncome();
-		const allIncomeAmount = allIncome.reduce(
-			(acc, income) => acc + income.amount,
-			0,
-		);
-		const incomeAmount = (allIncomeAmount / 100).toLocaleString("pt-BR");
-		setAllIncome(incomeAmount);
-	});
+	const getFormattedAmount = (
+		typeAmount: "incomes" | "expenses" | "invoices",
+	) =>
+		useLiveQuery(() =>
+			db[typeAmount]
+				.toArray()
+				.then((arr) =>
+					(
+						arr.reduce((acc, item) => acc + item.amount, 0) / 100
+					).toLocaleString("pt-BR"),
+				),
+		) ?? "0,00";
 
-	useEffect(() => {
-		const allExpense = getAllExpenses();
-		const allExpenseAmount = allExpense.reduce(
-			(acc, expense) => acc + expense.amount,
-			0,
-		);
-
-		const expenseAmount = (allExpenseAmount / 100).toLocaleString("pt-BR");
-		setAllExpense(expenseAmount);
-	});
+	const incomeAmount = getFormattedAmount("incomes");
+	const expenseAmount = getFormattedAmount("expenses");
+	const invoiceAmount = getFormattedAmount("invoices");
 
 	return (
 		<div className="flex min-h-screen">
@@ -68,10 +62,10 @@ export function App() {
 					</div>
 
 					<div className="flex gap-2">
-						<Button modalType={"income"} onClick={() => openModal("income")}>
+						<Button onClick={() => openModal("income")}>
 							Orçamento do mês
 						</Button>
-						<Button modalType={"expense"} onClick={() => openModal("expense")}>
+						<Button onClick={() => openModal("expense")}>
 							Adicionar despesa
 						</Button>
 					</div>
@@ -81,17 +75,17 @@ export function App() {
 						<CardMoney
 							icon={<ArrowUpCircle className="text-emerald-400" />}
 							title={"Disponível no mês"}
-							value={allIncome}
+							value={incomeAmount}
 						/>
 						<CardMoney
 							icon={<ArrowDownCircle className="text-red-400" />}
 							title={"Gasto mensal atual"}
-							value={allExpense}
+							value={expenseAmount}
 						/>
 						<CardMoney
 							icon={<CreditCard className="text-orange-400" />}
 							title={"Fatura atual"}
-							value={"totalInvoice"}
+							value={invoiceAmount}
 						/>
 					</section>
 					<section className="gap-4 lg:grid lg:grid-cols-3">

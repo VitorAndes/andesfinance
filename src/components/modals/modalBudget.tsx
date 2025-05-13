@@ -1,5 +1,5 @@
 import { useModal } from "@/context/modalContext";
-import { handleSetIncome } from "@/function/handleIncomeLocalStorage";
+import { db } from "@/dexie/db";
 import { useMaskAmount } from "@/hooks/useMaskAmount";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -14,7 +14,11 @@ const schemaBudgetForm = z.object({
 		.nonempty({ message: "Adicione uma descrição" })
 		.max(25)
 		.min(1),
-	incomeAmount: z.number().int().nonnegative(),
+	incomeAmount: z
+		.number()
+		.int()
+		.nonnegative()
+		.positive({ message: "O valor deve ser maior que zero " }),
 	incomeTransactionDate: z.string().date("Selecione uma data"),
 });
 
@@ -48,19 +52,23 @@ export function ModalIncome() {
 		return Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
 	}
 
-	const onSubmitIncomeForm = ({
+	const onSubmitIncomeForm = async ({
 		incomeDescription,
 		incomeTransactionDate,
 	}: createIncomeForm) => {
-		handleSetIncome({
-			incomeId: createId(),
-			amount: incomeAmount,
-			description: incomeDescription,
-			transaction_date: incomeTransactionDate,
-		});
-
-		toast.success("novo saldo adicionado!");
-		reset();
+		try {
+			const income = await db.incomes.add({
+				incomeId: createId(),
+				amount: incomeAmount,
+				description: incomeDescription,
+				transaction_date: incomeTransactionDate,
+			});
+			console.log(`novo income criado ${income}`);
+			toast.success("novo saldo adicionado!");
+			reset();
+		} catch (error) {
+			console.error(`falha ao adicionar novo income: ${error}`);
+		}
 	};
 
 	return (

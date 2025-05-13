@@ -1,17 +1,7 @@
-import type { InvoiceStatus } from "@/types/types";
+import type { Invoice } from "@/types/types";
 import { type ReactNode, createContext, useContext, useState } from "react";
 
 export type ModalType = "settings" | "income" | "expense" | "invoice" | null;
-
-export interface Invoice {
-	expenseId: number;
-	userId: string;
-	categoryId: number;
-	product: string;
-	amount: number;
-	transaction_date: string;
-	payment_status: InvoiceStatus;
-}
 
 type ModalContextType = {
 	isOpen: boolean;

@@ -1,5 +1,5 @@
 import { useModal } from "@/context/modalContext";
-import { handleSetExpense } from "@/function/handleExpenseLocalStorage";
+import { db } from "@/dexie/db";
 import { useMaskAmount } from "@/hooks/useMaskAmount";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -67,6 +67,9 @@ export function ModalSpend() {
 		formState: { errors },
 	} = useForm<createExpenseForm>({
 		resolver: zodResolver(schemaExpenseForm),
+		defaultValues: {
+			expenseAmount: 0,
+		},
 	});
 
 	const expenseAmount = watch("expenseAmount");
@@ -79,23 +82,44 @@ export function ModalSpend() {
 		return Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
 	}
 
-	const onSubmitExpenseForm = ({
+	const onSubmitExpenseForm = async ({
 		expenseCategory,
 		expenseDescription,
 		expensePaymentMethod,
 		expenseTransactionDate,
 	}: createExpenseForm) => {
-		handleSetExpense({
-			expenseId: createId(),
-			amount: expenseAmount,
-			category: expenseCategory,
-			payment_type: expensePaymentMethod,
-			product: expenseDescription,
-			transaction_date: expenseTransactionDate,
-		});
+		try {
+			const id = createId();
 
-		toast.success("nova expense");
-		reset();
+			const spendCommonData = {
+				product: expenseDescription,
+				transaction_date: expenseTransactionDate,
+				category: expenseCategory,
+			};
+
+			if (expensePaymentMethod === "Crédito") {
+				const invoice = await db.invoices.add({
+					invoiceId: id,
+					payment_status: "pending",
+					amount: expenseAmount,
+					...spendCommonData,
+				});
+				console.log(`nova invoice criada ${invoice}`);
+			} else {
+				const expense = await db.expenses.add({
+					expenseId: id,
+					payment_type: expensePaymentMethod,
+					amount: expenseAmount,
+					...spendCommonData,
+				});
+				console.log(`nova expense criada ${expense}`);
+			}
+
+			toast.success("nova expense adicionada");
+			reset();
+		} catch (error) {
+			console.error(`falha ao adicionar nova expense: ${error}`);
+		}
 	};
 
 	return (

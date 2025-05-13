@@ -1,4 +1,5 @@
-import type { Invoice, ModalType } from "@/context/modalContext";
+import type { ModalType } from "@/context/modalContext";
+import type { Invoice } from "@/types/types";
 import type { ComponentProps } from "react";
 
 const BUTTON_VARIANTS = {
