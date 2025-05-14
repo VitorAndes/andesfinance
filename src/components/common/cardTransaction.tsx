@@ -5,11 +5,11 @@ interface CardTransactionProps {
 	local: string;
 	tag: string;
 	paymentDate: string;
-	amount: number;
+	amount: string;
 	paymentMethod?: string;
 }
 
-export function ExpenseTransaction({
+export function CardTransaction({
 	local,
 	paymentDate,
 	paymentMethod,

@@ -1,17 +1,13 @@
 import { useFilter } from "@/hooks/useFilter";
 import { usePagination } from "@/hooks/usePagination";
-import type { Transaction } from "@/types/transaction";
 
+import { useQueryCategory } from "@/hooks/useQueryCategory";
+import { useQueryTransactions } from "@/hooks/useQueryTransactions";
 import { ListRestart } from "lucide-react";
-import { ExpenseTransaction } from "../common/cardTransaction";
+import { CardTransaction } from "../common/cardTransaction";
 import { Input } from "../common/input";
 import { InputSelect } from "../common/inputSelect";
 import { PAGINATION_CONFIG, TablePagination } from "./tablePagination";
-
-interface TableClientProps {
-	transactions: Transaction[];
-	categories: { name: string }[];
-}
 
 const methodOptions = [
 	{ name: "Crédito" },
@@ -27,7 +23,11 @@ const transactionTypeOptions = [
 	},
 ] satisfies { name: string }[];
 
-export function TableClient({ transactions, categories }: TableClientProps) {
+export function TableClient() {
+	const { category } = useQueryCategory();
+
+	const { transactions } = useQueryTransactions();
+
 	const {
 		filteredData,
 		searchName,
@@ -85,7 +85,7 @@ export function TableClient({ transactions, categories }: TableClientProps) {
 						onChange={(e) => {
 							setSearchTag(e.target.value);
 						}}
-						options={categories}
+						options={category}
 					/>
 				</div>
 
@@ -144,22 +144,22 @@ export function TableClient({ transactions, categories }: TableClientProps) {
 							</div>
 						) : (
 							paginatedItems.map((transaction) =>
-								transaction.type === "expense" ? (
-									<ExpenseTransaction
+								transaction.type === "compras" ? (
+									<CardTransaction
 										key={transaction.id}
 										type={"expense"}
 										local={transaction.name}
-										tag={transaction.tag}
+										tag={transaction.tag ?? ""}
 										paymentDate={transaction.paymentDate}
 										amount={transaction.amount}
 										paymentMethod={transaction.paymentMethod}
 									/>
 								) : (
-									<ExpenseTransaction
+									<CardTransaction
 										key={transaction.id}
 										type={"income"}
 										local={transaction.name}
-										tag={transaction.tag}
+										tag={""}
 										paymentDate={transaction.paymentDate}
 										amount={transaction.amount}
 									/>

@@ -7,15 +7,9 @@ export const STORAGE_KEYS = {
 export type PaymentType = "Débito" | "Crédito" | "Dinheiro";
 export type InvoiceStatus = "pending" | "paid";
 
-export interface User {
-	id: string;
-	username: string;
-	email: string;
-	password_hash: string;
-	salt: string;
-	created_at: Date;
-	updated_at: Date;
-	deleted_at: Date | null;
+export interface Category {
+	categoryId: string;
+	name: string;
 }
 
 export interface Expense {

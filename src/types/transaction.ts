@@ -1,20 +1,18 @@
-import type { PaymentType } from "./types";
-
 export type TransactionBase = {
 	id: string;
 	name: string;
-	amount: number;
+	amount: string;
 	paymentDate: string;
-	tag: string;
+	tag?: string;
 };
 
 export type ExpenseTransaction = TransactionBase & {
-	type: "expense";
-	paymentMethod: PaymentType;
+	type: "compras";
+	paymentMethod: string;
 };
 
 export type IncomeTransaction = TransactionBase & {
-	type: "income";
+	type: "recebimentos";
 };
 
 export type Transaction = ExpenseTransaction | IncomeTransaction;

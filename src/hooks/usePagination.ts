@@ -1,6 +1,7 @@
+import type { Transaction } from "@/types/transaction";
 import { useMemo, useState } from "react";
 
-export function usePagination<T>(items: T[], itemsPerPage: number) {
+export function usePagination(items: Transaction[], itemsPerPage: number) {
 	const [currentPage, setCurrentPage] = useState(1);
 
 	const totalPages = Math.ceil(items.length / itemsPerPage);

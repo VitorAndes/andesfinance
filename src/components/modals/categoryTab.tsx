@@ -1,51 +1,85 @@
-import { categoryData, type categoryDataType } from "@/data/categoryData";
+import { db } from "@/db/dexie";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useLiveQuery } from "dexie-react-hooks";
 import { PlusCircle } from "lucide-react";
-import { type FormEvent, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 import { Input } from "../common/input";
 import { Category } from "./category";
 
+const schemaCategoryForm = z.object({
+	categoryName: z
+		.string()
+		.nonempty({ message: "Adicione o nome da categoria" })
+		.trim()
+		.max(25)
+		.min(1, { message: "Digite ao menos um caractere na categoria." }),
+});
+
+type createCategoryForm = z.infer<typeof schemaCategoryForm>;
+
 export function CategoryTab() {
-	const [category, setCategory] = useState<categoryDataType[]>(categoryData);
+	const categorys = useLiveQuery(() => db.categories.toArray());
 
-	const inputCategory = useRef<HTMLInputElement>(null);
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm<createCategoryForm>({
+		resolver: zodResolver(schemaCategoryForm),
+	});
 
-	function removeCategory(id: string) {
-		setCategory((prev) => prev.filter((cat) => cat.id !== id));
+	async function removeCategory(id: string) {
+		try {
+			await db.categories.where("categoryId").equals(id).delete();
+			toast.dismiss("Categoria removida");
+		} catch (error) {
+			console.error(`falha ao remover categoria: ${error}`);
+		}
 	}
 
-	function generateId() {
-		const timestamp = Date.now().toString(36);
-		const random = Math.random().toString(36).substring(2, 10);
-		return `${timestamp}-${random}`;
+	function createId() {
+		return Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
 	}
 
-	function handleSubmmit(e: FormEvent) {
-		e.preventDefault();
-		const newCategory = inputCategory.current?.value;
+	async function onSubmitCategoryForm({ categoryName }: createCategoryForm) {
+		try {
+			await db.categories.add({
+				name: categoryName,
+				categoryId: createId(),
+			});
 
-		if (!newCategory) return;
+			toast.success(`Nova categoria criada: ${categoryName}`);
 
-		setCategory((prev) => [...prev, { name: newCategory, id: generateId() }]);
-		if (inputCategory.current) inputCategory.current.value = "";
+			reset();
+		} catch (error) {
+			console.error(`falha ao adicionar nova categoria: ${error}`);
+		}
 	}
 
 	return (
 		<>
-			<form onSubmit={handleSubmmit} className="flex gap-2">
+			<form
+				onSubmit={handleSubmit(onSubmitCategoryForm)}
+				className="flex gap-2"
+			>
 				<Input
-					ref={inputCategory}
+					{...register("categoryName")}
 					htmlFor={"newCategory"}
 					label={"Adicionar nova categoria"}
 					icon={<PlusCircle />}
+					errors={errors.categoryName?.message}
 				/>
 			</form>
-			<div className="mt-5 flex max-h-96 flex-col-reverse gap-3 overflow-y-auto">
-				{category?.map(({ id, name }) => {
+			<div className="mt-5 flex max-h-96 flex-col gap-3 overflow-y-auto">
+				{categorys?.map(({ categoryId, name }) => {
 					return (
 						<Category
-							key={id}
+							key={categoryId}
 							name={name}
-							removeCategory={() => removeCategory(id)}
+							removeCategory={() => removeCategory(categoryId)}
 						/>
 					);
 				})}

@@ -9,31 +9,33 @@ export function useFilter(transactionsData: Transaction[]) {
 	const [searchDate, setSearchDate] = useState("");
 
 	const filteredData = useMemo(() => {
+		if (!transactionsData) return [];
+
 		return transactionsData.filter((transaction: Transaction) => {
 			const matchesName =
 				searchName.trim() === "" ||
-				(transaction.type === "expense" &&
+				(transaction.type === "compras" &&
 					transaction.name.toLowerCase().includes(searchName.toLowerCase())) ||
-				(transaction.type === "income" &&
+				(transaction.type === "recebimentos" &&
 					transaction.name.toLowerCase().includes(searchName.toLowerCase()));
 
 			const matchesTag =
 				searchTag.trim() === "" ||
-				(transaction.type === "expense" &&
-					transaction.tag.toLowerCase().includes(searchTag.toLowerCase()));
+				(transaction.type === "compras" &&
+					transaction.tag?.toLowerCase().includes(searchTag.toLowerCase()));
 
 			const matchesMethod =
 				searchMethod.trim() === "" ||
-				(transaction.type === "expense" &&
+				(transaction.type === "compras" &&
 					transaction.paymentMethod
 						.toLowerCase()
 						.includes(searchMethod.toLowerCase()));
 
 			const matchesType =
 				searchType.trim() === "" ||
-				(transaction.type === "expense" &&
+				(transaction.type === "compras" &&
 					transaction.type.toLowerCase().includes(searchType.toLowerCase())) ||
-				(transaction.type === "income" &&
+				(transaction.type === "recebimentos" &&
 					transaction.type.toLowerCase().includes(searchType.toLowerCase()));
 
 			const matchesDate =

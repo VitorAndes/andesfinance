@@ -1,5 +1,3 @@
-import type { ModalType } from "@/context/modalContext";
-import type { Invoice } from "@/types/types";
 import type { ComponentProps } from "react";
 
 const BUTTON_VARIANTS = {
@@ -12,8 +10,7 @@ type ButtonVariant = keyof typeof BUTTON_VARIANTS;
 
 interface ButtonProps extends ComponentProps<"button"> {
 	variant?: ButtonVariant;
-	modalType?: ModalType;
-	modalData?: Invoice;
+
 	buttonModal?: boolean;
 }
 

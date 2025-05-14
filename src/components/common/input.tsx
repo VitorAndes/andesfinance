@@ -21,7 +21,11 @@ export function Input({ htmlFor, label, icon, errors, ...props }: InputProps) {
 					className="h-12 w-full rounded-md border border-primary/50 px-2 focus:outline-none placeholder:font-medium text-default/60"
 				/>
 				{icon && (
-					<button className="cursor-pointer" type="submit">
+					<button
+						className="cursor-pointer hover:text-accent transition-colors
+						hover:scale-105"
+						type="submit"
+					>
 						{icon}
 					</button>
 				)}

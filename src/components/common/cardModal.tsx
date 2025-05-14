@@ -17,7 +17,7 @@ export function CardModal() {
 			}`}
 		>
 			<div
-				className={`relative w-full space-y-4 rounded-lg bg-background p-4 shadow shadow-default transition-all duration-500 lg:w-lg ${
+				className={`relative w-full space-y-4 rounded-lg bg-background p-4 shadow shadow-default transition-all duration-500 md:w-lg ${
 					isOpen
 						? " scale-105 opacity-100 ease-in-out"
 						: " scale-95 opacity-0 duration-1000"

@@ -1,5 +1,5 @@
 import { useModal } from "@/context/modalContext";
-import { db } from "@/dexie/db";
+import { db } from "@/db/dexie";
 import { useMaskAmount } from "@/hooks/useMaskAmount";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -12,8 +12,9 @@ const schemaBudgetForm = z.object({
 	incomeDescription: z
 		.string()
 		.nonempty({ message: "Adicione uma descrição" })
+		.trim()
 		.max(25)
-		.min(1),
+		.min(1, { message: "Digite ao menos um caractere na descrição." }),
 	incomeAmount: z
 		.number()
 		.int()

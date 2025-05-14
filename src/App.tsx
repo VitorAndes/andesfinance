@@ -7,7 +7,6 @@ import { CardModal } from "@/components/common/cardModal";
 import { CardMoney } from "@/components/common/cardMoney";
 import { CardSection } from "@/components/common/cardSection";
 
-import { useLiveQuery } from "dexie-react-hooks";
 import {
 	ArrowDownCircle,
 	ArrowUpCircle,
@@ -16,31 +15,16 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { SideBar } from "./components/sidebar/sideBar";
-import { TableClient } from "./components/table/tableClient";
+import { TableClient } from "./components/table/table";
 import { useModal } from "./context/modalContext";
-import { transactionsData } from "./data/transactionsData";
-import { db } from "./dexie/db";
+import { useQueryAmount } from "./hooks/useQueryAmount";
 
 export function App() {
 	const { openModal } = useModal();
 	const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
-	const getFormattedAmount = (
-		typeAmount: "incomes" | "expenses" | "invoices",
-	) =>
-		useLiveQuery(() =>
-			db[typeAmount]
-				.toArray()
-				.then((arr) =>
-					(
-						arr.reduce((acc, item) => acc + item.amount, 0) / 100
-					).toLocaleString("pt-BR"),
-				),
-		) ?? "0,00";
-
-	const incomeAmount = getFormattedAmount("incomes");
-	const expenseAmount = getFormattedAmount("expenses");
-	const invoiceAmount = getFormattedAmount("invoices");
+	const { expensesAmount, incomesAmount, invoicesAmount } = useQueryAmount();
+	console.log(`app render: ${incomesAmount}`);
 
 	return (
 		<div className="flex min-h-screen">
@@ -75,17 +59,17 @@ export function App() {
 						<CardMoney
 							icon={<ArrowUpCircle className="text-emerald-400" />}
 							title={"Disponível no mês"}
-							value={incomeAmount}
+							value={incomesAmount}
 						/>
 						<CardMoney
 							icon={<ArrowDownCircle className="text-red-400" />}
 							title={"Gasto mensal atual"}
-							value={expenseAmount}
+							value={expensesAmount}
 						/>
 						<CardMoney
 							icon={<CreditCard className="text-orange-400" />}
 							title={"Fatura atual"}
-							value={invoiceAmount}
+							value={invoicesAmount}
 						/>
 					</section>
 					<section className="gap-4 lg:grid lg:grid-cols-3">
@@ -108,10 +92,7 @@ export function App() {
 							className="lg:col-span-2"
 							title={"Relátorio de transações"}
 						>
-							<TableClient
-								transactions={transactionsData}
-								categories={[{ name: "alimentação" }]}
-							/>
+							<TableClient />
 						</CardSection>
 						<CardSection className="lg:col-span-1" title={"Faturas"}>
 							<CardInvoices />

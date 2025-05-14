@@ -1,13 +1,13 @@
 import type { ComponentProps } from "react";
 
-type TagOptionType = {
+export type TagOptionType = {
 	name: string;
 };
 
 interface InputSelectProps extends ComponentProps<"select"> {
 	label: string;
 	htmlFor: string;
-	options: TagOptionType[];
+	options: TagOptionType[] | undefined;
 	errors?: string | undefined; // mudar pra obrigatorio depois
 }
 
@@ -35,10 +35,10 @@ export function InputSelect({
 					Escolha uma opção
 				</option>
 
-				{options.map(({ name }) => {
+				{options?.map((op) => {
 					return (
-						<option key={name} value={name}>
-							{name}
+						<option key={op.name} value={op.name}>
+							{op.name}
 						</option>
 					);
 				})}
