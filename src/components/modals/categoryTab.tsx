@@ -11,6 +11,7 @@ import { Category } from "./category";
 const schemaCategoryForm = z.object({
 	categoryName: z
 		.string()
+		.toLowerCase()
 		.nonempty({ message: "Adicione o nome da categoria" })
 		.trim()
 		.max(25)
@@ -61,6 +62,10 @@ export function CategoryTab() {
 
 	return (
 		<>
+			<p className="font-title font-semibold">
+				Adicione categorias para as despesas.
+			</p>
+
 			<form
 				onSubmit={handleSubmit(onSubmitCategoryForm)}
 				className="flex gap-2"
@@ -68,7 +73,7 @@ export function CategoryTab() {
 				<Input
 					{...register("categoryName")}
 					htmlFor={"newCategory"}
-					label={"Adicionar nova categoria"}
+					label={"Nome da categoria"}
 					icon={<PlusCircle />}
 					errors={errors.categoryName?.message}
 				/>

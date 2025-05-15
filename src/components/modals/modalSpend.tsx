@@ -35,6 +35,7 @@ const schemaExpenseForm = (validCategories: string[]) =>
 			.min(1, { message: "Digite ao menos um caractere na descrição." }),
 		expensePaymentMethod: z
 			.string()
+
 			.refine((val) => paymentMethodEnum.includes(val as PaymentMethod), {
 				message: "Selecione uma forma de pagamento",
 			}),

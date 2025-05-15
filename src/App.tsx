@@ -13,30 +13,29 @@ import {
 	CreditCard,
 	SidebarClose,
 } from "lucide-react";
-import { useState } from "react";
 import { SideBar } from "./components/sidebar/sideBar";
 import { TableClient } from "./components/table/table";
 import { useModal } from "./context/modalContext";
+import { useSideBar } from "./context/useSidebar";
 import { useQueryAmount } from "./hooks/useQueryAmount";
 
 export function App() {
 	const { openModal } = useModal();
-	const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+	const { isSidebarOpen, setIsSidebarOpen } = useSideBar();
 
 	const { expensesAmount, incomesAmount, invoicesAmount } = useQueryAmount();
-	console.log(`app render: ${incomesAmount}`);
 
 	return (
 		<div className="flex min-h-screen">
-			<SideBar isSideBarOpen={isSideBarOpen} />
+			<SideBar />
 			<div className=" flex-1 overflow-auto h-screen ">
 				<header className="sticky top-0 z-10 flex h-18 flex-col justify-between gap-4 p-4 backdrop-blur-xs lg:flex-row lg:items-center">
 					<div className="flex gap-2 items-center">
 						<button
 							aria-label="close modal button"
-							className="flex size-11 items-center justify-center p-1 text-default"
+							className=" size-11 items-center justify-center p-1 text-default flex"
 							type="button"
-							onClick={() => setIsSideBarOpen((prev) => !prev)}
+							onClick={() => setIsSidebarOpen(!isSidebarOpen)}
 						>
 							<SidebarClose className="w-full h-full" />
 						</button>

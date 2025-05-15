@@ -9,11 +9,9 @@ import { Input } from "../common/input";
 import { InputSelect } from "../common/inputSelect";
 import { PAGINATION_CONFIG, TablePagination } from "./tablePagination";
 
-const methodOptions = [
-	{ name: "Crédito" },
-	{ name: "Débito" },
-	{ name: "Dinheiro" },
-] satisfies { name: string }[];
+const methodOptions = [{ name: "Débito" }, { name: "Dinheiro" }] satisfies {
+	name: string;
+}[];
 const transactionTypeOptions = [
 	{
 		name: "Recebimentos",

@@ -1,3 +1,6 @@
+import { db } from "@/db/dexie";
+import { useLiveQuery } from "dexie-react-hooks";
+import { useEffect, useState } from "react";
 import { Label, Pie, PieChart } from "recharts";
 import {
 	type ChartConfig,
@@ -8,11 +11,11 @@ import {
 	ChartTooltipContent,
 } from "../ui/chart";
 
-const chartData = [
-	{ name: "crédito", cost: 333, fill: "var(--color-default)" },
-	{ name: "débito", cost: 200, fill: "var(--color-primary)" },
-	{ name: "dinheiro", cost: 250, fill: "var(--color-secondary)" },
-];
+type ChartDataType = {
+	name: string;
+	cost: number;
+	fill: string;
+};
 
 const chartConfig = {
 	crédito: {
@@ -30,6 +33,51 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function ChartPaymentMethod() {
+	const invoices = useLiveQuery(() => db.invoices.toArray());
+	const expenses = useLiveQuery(() => db.expenses.toArray());
+
+	const [chartData, setChartData] = useState<ChartDataType[]>([]);
+
+	useEffect(() => {
+		if (!invoices || !expenses) return;
+
+		const allExpenses = [
+			...invoices.map((invoice) => ({
+				amount: invoice.amount,
+				payment_type: "crédito",
+			})),
+			...expenses.map((expense) => ({
+				amount: expense.amount,
+				payment_type: expense.payment_type,
+			})),
+		];
+
+		const groupedByPaymentMethod = allExpenses.reduce<Record<string, number>>(
+			(acc, item) => {
+				const key = item.payment_type.toLowerCase();
+				const value = item.amount / 100;
+
+				if (!acc[key]) acc[key] = 0;
+				acc[key] += value;
+
+				return acc;
+			},
+			{},
+		);
+
+		const formattedChartData = Object.entries(chartConfig).map(
+			([key, config]) => ({
+				name: config.label,
+				cost: groupedByPaymentMethod[key] ?? 0,
+				fill: config.color,
+			}),
+		);
+
+		console.log(formattedChartData);
+
+		setChartData(formattedChartData);
+	}, [invoices, expenses]);
+
 	const totalSpend = chartData.reduce((acc, curr) => acc + curr.cost, 0);
 
 	return (
@@ -83,7 +131,7 @@ export function ChartPaymentMethod() {
 					</Pie>
 					<ChartLegend
 						content={<ChartLegendContent nameKey="name" />}
-						className="-translate-y-2 flex-wrap gap-2 font-secondary font-semibold lg:text-lg [&>*]:basis-1/4 [&>*]:justify-center"
+						className="-translate-y-2 flex-wrap gap-2 font-secondary font-semibold  lg:text-lg [&>*]:basis-1/4 [&>*]:justify-center"
 					/>
 				</PieChart>
 			</ChartContainer>

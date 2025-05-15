@@ -48,7 +48,7 @@ export function CardTransaction({
 						<span
 							className={`font-secondary font-semibold text-default ${type === "expense" && "line-through"}`}
 						>
-							${amount}
+							R${amount}
 						</span>
 					</div>
 				</div>

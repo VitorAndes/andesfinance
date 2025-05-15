@@ -33,9 +33,8 @@ function mapIncomeToTransaction(income: Income): IncomeTransaction {
 export function useQueryTransactions(): { transactions: Transaction[] } {
 	const incomes = useLiveQuery(() => db.incomes.toArray());
 	const expenses = useLiveQuery(() => db.expenses.toArray());
-	const invoices = useLiveQuery(() => db.invoices.toArray());
 
-	if (!incomes || !expenses || !invoices) {
+	if (!incomes || !expenses) {
 		return { transactions: [] };
 	}
 

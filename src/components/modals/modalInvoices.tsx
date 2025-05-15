@@ -1,5 +1,5 @@
 import type { Invoice } from "@/types/types";
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, Receipt } from "lucide-react";
 import { type FormEvent, useRef } from "react";
 import { Input } from "../common/input";
 
@@ -25,13 +25,40 @@ export function ModalInvoices({ invoice }: ModalInvoicesProps) {
 					Pagamento de fatura
 				</h1>
 			</div>
-			<form onSubmit={handleSubmit} className="mt-12 space-y-2">
-				<h2 className="font-semibold font-title text-default">
-					{invoice.product}
-				</h2>
-				<p className="font-secondary">Vencimento: {invoice.transaction_date}</p>
-				<p className="font-secondary">Valor: ${invoice.amount}</p>
+			<div className="mt-12 space-y-2">
+				<h2 className="font-title font-semibold">Informações da fatura</h2>
+				<div className="border border-secondary rounded-md p-4 flex flex-col gap-4">
+					<span className="flex items-center justify-between">
+						<p className="font-medium font-secondary ">Descrição da fatura</p>
+						<p className=" font-secondary font-semibold ">{invoice.product}</p>
+					</span>
+					<span className="flex items-center justify-between">
+						<p className="font-medium font-secondary ">Categoria da fatura</p>
+						<p className=" font-secondary font-semibold ">{invoice.category}</p>
+					</span>
+					<span className="flex items-center justify-between">
+						<p className="font-medium font-secondary ">Valor da fatura</p>
+						<p className=" font-secondary font-semibold ">R${invoice.amount}</p>
+					</span>
+					<span className="flex items-center justify-between">
+						<p className="font-medium font-secondary ">Vencimento da fatura</p>
+						<p className="font-secondary font-semibold  ">
+							{invoice.transaction_date}
+						</p>
+					</span>
+					<span className="flex items-center justify-between">
+						<p className="font-medium font-secondary ">Status da fatura</p>
+						<p className="font-secondary font-semibold flex gap-2 ">
+							{invoice.payment_status === "pending" ? "pendente" : "paga"}
+							<Receipt
+								className={`${invoice.payment_status === "pending" ? "text-orange-500" : "text-lime-500"}`}
+							/>
+						</p>
+					</span>
+				</div>
+			</div>
 
+			<form onSubmit={handleSubmit}>
 				<Input
 					ref={inputRef}
 					htmlFor={"invoicePayment"}

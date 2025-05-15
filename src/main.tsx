@@ -3,22 +3,26 @@ import { createRoot } from "react-dom/client";
 import { Toaster } from "sonner";
 import { App } from "./App.tsx";
 import { ModalProvider } from "./context/modalContext.tsx";
+import { SidebarProvider } from "./context/useSidebar.tsx";
 import "./index.css";
 
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<ModalProvider>
-			<Toaster
-				richColors
-				visibleToasts={3}
-				expand
-				toastOptions={{
-					className: "p-5 text-base",
-				}}
-			/>
+		<SidebarProvider>
+			<ModalProvider>
+				<Toaster
+					richColors
+					visibleToasts={3}
+					toastOptions={{
+						classNames: {
+							title: "!font-title !font-semibold !text-lg",
+						},
+					}}
+				/>
 
-			<App />
-		</ModalProvider>
+				<App />
+			</ModalProvider>
+		</SidebarProvider>
 	</StrictMode>,
 );

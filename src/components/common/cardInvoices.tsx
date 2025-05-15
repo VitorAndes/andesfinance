@@ -1,49 +1,12 @@
 import { useModal } from "@/context/modalContext";
-import type { Invoice } from "@/types/types";
+import { useQueryInvoices } from "@/hooks/useQueryInvoices";
 import { Receipt } from "lucide-react";
 import { Button } from "./button";
 
 export function CardInvoices() {
 	const { openModal } = useModal();
 
-	const invoices: Invoice[] = [
-		{
-			invoiceId: "3",
-
-			category: "alimentação",
-			product: "almoço",
-			amount: 12.21,
-			transaction_date: "01/02/2004",
-			payment_status: "paid",
-		},
-		{
-			invoiceId: "2",
-
-			category: "alimentação",
-			product: "almoço",
-			amount: 12.21,
-			transaction_date: "01/02/2030",
-			payment_status: "pending",
-		},
-		{
-			invoiceId: "5",
-
-			category: "alimentação",
-			product: "seila",
-			amount: 333.33,
-			transaction_date: "01/02/2010",
-			payment_status: "pending",
-		},
-		{
-			invoiceId: "4",
-
-			category: "alimentação",
-			product: "cinema",
-			amount: 33.3321,
-			transaction_date: "01/02/2020",
-			payment_status: "pending",
-		},
-	];
+	const invoices = useQueryInvoices();
 
 	return (
 		<>
@@ -61,7 +24,7 @@ export function CardInvoices() {
 								<div>
 									<span className="font-title text-default/50">
 										{invoice.payment_status === "pending"
-											? "Fatura pendendte"
+											? "Fatura pendente"
 											: "Fatura paga"}
 									</span>
 									<h1 className="font-secondary font-semibold text-default">
@@ -86,8 +49,8 @@ export function CardInvoices() {
 										</Button>
 									)}
 								</div>
-								<span className="font-secondary font-semibold text-default line-through">
-									${invoice.amount}
+								<span className="font-secondary font-semibold text-default ">
+									R${invoice.amount.toLocaleString("pt-BR")}
 								</span>
 							</div>
 						</div>

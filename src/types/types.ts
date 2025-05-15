@@ -15,16 +15,16 @@ export interface Category {
 export interface Expense {
 	expenseId: string;
 	product: string;
+	category: string;
 	amount: number;
 	transaction_date: string;
 	payment_type: string;
-	category: string;
 }
 
 export interface Invoice {
 	invoiceId: string;
-	category: string;
 	product: string;
+	category: string;
 	amount: number;
 	transaction_date: string;
 	payment_status: InvoiceStatus;

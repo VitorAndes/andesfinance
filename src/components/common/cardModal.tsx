@@ -35,7 +35,7 @@ export function CardModal() {
 
 				<button
 					type="button"
-					className="absolute top-2 right-2 cursor-pointer"
+					className="absolute top-2 right-2 cursor-pointer hover:scale-110"
 					onClick={closeModal}
 				>
 					<X />

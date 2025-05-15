@@ -1,36 +1,38 @@
 import { useState } from "react";
-import { Button } from "../common/button";
 import { CategoryTab } from "./categoryTab";
 
-enum Tab {
-	Home = "home",
-	Category = "category",
+interface tabsProps {
+	tab: string;
 }
 
+const Tabs: tabsProps[] = [{ tab: "categorias" }];
+
 export function ModalSettings() {
-	const [activeTab, setActiveTab] = useState<Tab>(Tab.Category);
+	const [activeTab, setActiveTab] = useState<tabsProps>(Tabs[0]);
 
 	return (
 		<>
 			<div className="-top-10 absolute left-2/12 w-2/3 rounded-lg bg-default py-8 shadow shadow-default">
 				<h1 className="text-center font-semibold font-title text-secondary lg:text-lg ">
-					Settings
+					Configurações
 				</h1>
 			</div>
 
 			<nav className="mt-12 flex gap-2 border-b pb-2">
-				<Button
-					variant={activeTab === Tab.Category ? "default" : "ghost"}
-					onClick={() => setActiveTab(Tab.Category)}
-				>
-					Category
-				</Button>
+				{Tabs.map(({ tab }, i) => (
+					<button
+						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+						key={i}
+						type="button"
+						className={`${activeTab === Tabs[i] ? "bg-primary text-secondary" : "border border-secondary"} py-3 w-24 rounded-md font-secondary font-semibold text-sm hover:bg-primary cursor-pointer hover:text-secondary transition-all `}
+						onClick={() => setActiveTab(Tabs[i])}
+					>
+						{tab}
+					</button>
+				))}
 			</nav>
 
-			<div className="h-fit ">
-				{activeTab === Tab.Home && "home"}
-				{activeTab === Tab.Category && <CategoryTab />}
-			</div>
+			<div className="h-fit ">{activeTab === Tabs[0] && <CategoryTab />}</div>
 		</>
 	);
 }
