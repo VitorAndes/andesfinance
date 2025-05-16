@@ -17,7 +17,7 @@ const methodOptions = [
 	{ id: "3", name: "Dinheiro" },
 ] satisfies { name: string; id: string }[];
 
-const paymentMethodEnum = ["Débito", "Crédito", "Dinheiro"] as const;
+const paymentMethodEnum = ["débito", "crédito", "dinheiro"] as const;
 type PaymentMethod = (typeof paymentMethodEnum)[number];
 
 const schemaExpenseForm = (validCategories: string[]) =>
@@ -29,12 +29,14 @@ const schemaExpenseForm = (validCategories: string[]) =>
 			.positive({ message: "O valor deve ser maior que zero " }),
 		expenseDescription: z
 			.string()
+			.toLowerCase()
 			.nonempty({ message: "Adicione uma descrição" })
 			.trim()
 			.max(25)
 			.min(1, { message: "Digite ao menos um caractere na descrição." }),
 		expensePaymentMethod: z
 			.string()
+			.toLowerCase()
 
 			.refine((val) => paymentMethodEnum.includes(val as PaymentMethod), {
 				message: "Selecione uma forma de pagamento",
@@ -99,25 +101,28 @@ export function ModalSpend() {
 				category: expenseCategory,
 			};
 
-			if (expensePaymentMethod === "Crédito") {
-				const invoice = await db.invoices.add({
-					invoiceId: id,
-					payment_status: "pending",
-					amount: expenseAmount,
-					...spendCommonData,
-				});
-				console.log(`nova invoice criada ${invoice}`);
-			} else {
-				const expense = await db.expenses.add({
-					expenseId: id,
-					payment_type: expensePaymentMethod,
-					amount: expenseAmount,
-					...spendCommonData,
-				});
-				console.log(`nova expense criada ${expense}`);
+			switch (expensePaymentMethod) {
+				case "crédito":
+					await db.invoices.add({
+						invoiceId: id,
+						payment_status: "pending",
+						amount: expenseAmount,
+						...spendCommonData,
+					});
+					toast.success("nova fatura adicionada");
+					break;
+
+				default:
+					await db.expenses.add({
+						expenseId: id,
+						payment_type: expensePaymentMethod,
+						amount: expenseAmount,
+						...spendCommonData,
+					});
+					toast.success("nova despesa adicionada");
+					break;
 			}
 
-			toast.success("nova expense adicionada");
 			reset();
 		} catch (error) {
 			console.error(`falha ao adicionar nova expense: ${error}`);

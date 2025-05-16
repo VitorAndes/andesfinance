@@ -20,7 +20,6 @@ const schemaBudgetForm = z.object({
 		.int()
 		.nonnegative()
 		.positive({ message: "O valor deve ser maior que zero " }),
-	incomeTransactionDate: z.string().date("Selecione uma data"),
 });
 
 type createIncomeForm = z.infer<typeof schemaBudgetForm>;
@@ -55,16 +54,15 @@ export function ModalIncome() {
 
 	const onSubmitIncomeForm = async ({
 		incomeDescription,
-		incomeTransactionDate,
 	}: createIncomeForm) => {
 		try {
-			const income = await db.incomes.add({
+			await db.incomes.add({
 				incomeId: createId(),
 				amount: incomeAmount,
 				description: incomeDescription,
-				transaction_date: incomeTransactionDate,
+				transaction_date: new Date().toISOString(),
 			});
-			console.log(`novo income criado ${income}`);
+
 			toast.success("novo saldo adicionado!");
 			reset();
 		} catch (error) {
@@ -101,13 +99,6 @@ export function ModalIncome() {
 					placeholder="Descrição do saldo"
 				/>
 
-				<Input
-					errors={errors.incomeTransactionDate?.message}
-					{...register("incomeTransactionDate")}
-					type="date"
-					htmlFor="date"
-					label="Inicio/Fim do ciclo"
-				/>
 				<div className="flex place-content-end mt-5 gap-4">
 					<Button variant="danger" onClick={closeModal}>
 						Cancelar

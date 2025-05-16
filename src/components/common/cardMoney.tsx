@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from "react";
 interface CardMoneyProps extends ComponentProps<"div"> {
 	icon: ReactNode;
 	title: string;
-	value: string;
+	value: number;
 }
 
 export function CardMoney(CardMoney: CardMoneyProps) {
@@ -12,7 +12,12 @@ export function CardMoney(CardMoney: CardMoneyProps) {
 				{CardMoney.title} {CardMoney.icon}
 			</h1>
 			<p className="font-secondary font-semibold text-default md:text-2xl">
-				R$ {CardMoney.value ? CardMoney.value : 0}
+				{CardMoney.value
+					? Intl.NumberFormat("pt-BR", {
+							style: "currency",
+							currency: "BRL",
+						}).format(CardMoney.value)
+					: 0}
 			</p>
 		</div>
 	);

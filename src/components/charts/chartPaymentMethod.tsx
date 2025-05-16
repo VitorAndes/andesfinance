@@ -19,22 +19,22 @@ type ChartDataType = {
 
 const chartConfig = {
 	crédito: {
-		label: "Crédito",
+		label: "crédito",
 		color: "var(--color-default)",
 	},
 	débito: {
-		label: "Débito",
+		label: "débito",
 		color: "var(--color-primary)",
 	},
 	dinheiro: {
-		label: "Dinheiro",
+		label: "dinheiro",
 		color: "var(--color-secondary)",
 	},
 } satisfies ChartConfig;
 
 export function ChartPaymentMethod() {
-	const invoices = useLiveQuery(() => db.invoices.toArray());
-	const expenses = useLiveQuery(() => db.expenses.toArray());
+	const invoices = useLiveQuery(async () => await db.invoices.toArray());
+	const expenses = useLiveQuery(async () => await db.expenses.toArray());
 
 	const [chartData, setChartData] = useState<ChartDataType[]>([]);
 
@@ -54,7 +54,7 @@ export function ChartPaymentMethod() {
 
 		const groupedByPaymentMethod = allExpenses.reduce<Record<string, number>>(
 			(acc, item) => {
-				const key = item.payment_type.toLowerCase();
+				const key = item.payment_type;
 				const value = item.amount / 100;
 
 				if (!acc[key]) acc[key] = 0;
@@ -72,8 +72,6 @@ export function ChartPaymentMethod() {
 				fill: config.color,
 			}),
 		);
-
-		console.log(formattedChartData);
 
 		setChartData(formattedChartData);
 	}, [invoices, expenses]);

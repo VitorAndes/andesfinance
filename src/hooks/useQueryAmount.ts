@@ -2,8 +2,7 @@ import { db } from "@/db/dexie";
 import { useLiveQuery } from "dexie-react-hooks";
 
 function formatAmount(typeAmount: { amount: number }[] = []) {
-	const total = typeAmount.reduce((acc, item) => acc + (item.amount ?? 0), 0);
-	return (total / 100).toLocaleString("pt-BR");
+	return typeAmount.reduce((acc, item) => acc + (item.amount ?? 0), 0);
 }
 
 export function useQueryAmount() {
@@ -11,9 +10,10 @@ export function useQueryAmount() {
 	const expenses = useLiveQuery(() => db.expenses.toArray());
 	const invoices = useLiveQuery(() => db.invoices.toArray());
 
-	const incomesAmount = formatAmount(incomes);
-	const expensesAmount = formatAmount(expenses);
-	const invoicesAmount = formatAmount(invoices);
+	const incomesAmount =
+		(Number(formatAmount(incomes)) - Number(formatAmount(expenses))) / 100;
+	const expensesAmount = formatAmount(expenses) / 100;
+	const invoicesAmount = formatAmount(invoices) / 100;
 
 	return { incomesAmount, expensesAmount, invoicesAmount };
 }

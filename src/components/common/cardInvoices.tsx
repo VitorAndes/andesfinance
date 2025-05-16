@@ -1,4 +1,5 @@
 import { useModal } from "@/context/modalContext";
+import { useNormalizeDate } from "@/hooks/useNormalizedDate";
 import { useQueryInvoices } from "@/hooks/useQueryInvoices";
 import { Receipt } from "lucide-react";
 import { Button } from "./button";
@@ -7,6 +8,8 @@ export function CardInvoices() {
 	const { openModal } = useModal();
 
 	const invoices = useQueryInvoices();
+
+	if (invoices.length === 0) return "Nenhuma fatura encontrada";
 
 	return (
 		<>
@@ -33,7 +36,7 @@ export function CardInvoices() {
 								</div>
 								<span className="font-secondary text-default/70">
 									{invoice.payment_status === "pending" &&
-										`Vencimento - ${invoice.transaction_date}`}
+										`Vencimento - ${useNormalizeDate(invoice.transaction_date)}`}
 								</span>
 							</div>
 							<div className="flex flex-col items-end justify-between gap-2">

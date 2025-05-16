@@ -1,3 +1,4 @@
+import { useNormalizeDate } from "@/hooks/useNormalizedDate";
 import { BanknoteArrowDown, BanknoteArrowUp } from "lucide-react";
 
 interface CardTransactionProps {
@@ -36,7 +37,7 @@ export function CardTransaction({
 							</h1>
 						</div>
 						<span className="font-secondary text-default/70">
-							{paymentDate}
+							{useNormalizeDate(paymentDate)}
 						</span>
 					</div>
 					<div
