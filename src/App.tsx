@@ -16,7 +16,7 @@ import {
 import { SideBar } from "./components/sidebar/sideBar";
 import { TableClient } from "./components/table/table";
 import { useModal } from "./context/modalContext";
-import { useSideBar } from "./context/useSidebar";
+import { useSideBar } from "./context/sidebarContext";
 import { useQueryAmount } from "./hooks/useQueryAmount";
 
 export function App() {

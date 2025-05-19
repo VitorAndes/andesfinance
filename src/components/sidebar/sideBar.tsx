@@ -8,8 +8,7 @@ import {
 	SidebarClose,
 } from "lucide-react";
 
-import { useSideBar } from "@/context/useSidebar";
-import { Button } from "../common/button";
+import { useSideBar } from "@/context/sidebarContext";
 import { SocialLink } from "../common/socialLink";
 import { NavLink } from "./navLink";
 
@@ -59,9 +58,13 @@ export function SideBar() {
 					</button>
 				</div>
 
-				<Button className="w-full flex-none">
+				<button
+					type="button"
+					disabled
+					className="w-full flex-none bg-violet-600 py-3 flex justify-center rounded-md text-secondary font-title font-semibold gap-2 shadow-inner shadow-default"
+				>
 					Buy me a coffee <Coffee />
-				</Button>
+				</button>
 
 				<div className="flex gap-4">
 					<SocialLink

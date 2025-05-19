@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { Toaster } from "sonner";
 import { App } from "./App.tsx";
 import { ModalProvider } from "./context/modalContext.tsx";
-import { SidebarProvider } from "./context/useSidebar.tsx";
+import { SidebarProvider } from "./context/sidebarContext.tsx";
 import "./index.css";
 
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
