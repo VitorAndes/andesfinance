@@ -39,7 +39,7 @@ export function CardInvoices() {
 										`Vencimento - ${useNormalizeDate(invoice.transaction_date)}`}
 								</span>
 							</div>
-							<div className="flex flex-col items-end justify-between gap-2">
+							<div className="flex flex-col items-end justify-between">
 								<div className="w-20">
 									{invoice.payment_status === "pending" && (
 										<Button
@@ -53,7 +53,7 @@ export function CardInvoices() {
 									)}
 								</div>
 								<span className="font-secondary font-semibold text-default ">
-									R${(invoice.amount / 100).toFixed(2)}
+									R${(invoice.amount / 100).toLocaleString("pt-BR")}
 								</span>
 							</div>
 						</div>

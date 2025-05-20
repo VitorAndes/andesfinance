@@ -97,7 +97,7 @@ export function ChartTransactions() {
 					right: 20,
 				}}
 			>
-				<CartesianGrid vertical={false} />
+				<CartesianGrid vertical={false} horizontal={false} />
 				<XAxis dataKey="date" axisLine={false} tickMargin={8} />
 				<ChartTooltip
 					cursor={false}

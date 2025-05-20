@@ -73,7 +73,7 @@ export function ChartSpendLocal() {
 				}}
 				className="font-secondary"
 			>
-				<CartesianGrid vertical={false} />
+				<CartesianGrid vertical={false} horizontal={false} />
 				<XAxis
 					dataKey="name"
 					tickLine={false}

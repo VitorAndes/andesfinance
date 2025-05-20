@@ -107,7 +107,7 @@ export function ModalInvoices({ invoice }: ModalInvoicesProps) {
 					<span className="flex items-center justify-between">
 						<p className="font-medium font-secondary ">Valor da fatura</p>
 						<p className=" font-secondary font-semibold ">
-							R${(invoice.amount / 100).toFixed(2)}
+							R${(invoice.amount / 100).toLocaleString("pt-BR")}
 						</p>
 					</span>
 					<span className="flex items-center justify-between">

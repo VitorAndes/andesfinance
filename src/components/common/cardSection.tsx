@@ -13,7 +13,7 @@ export function CardSection({
 	return (
 		<div
 			{...props}
-			className={`flex h-full w-full flex-col gap-4 rounded-md p-4 shadow-xs shadow-default ${className}`}
+			className={`flex h-full w-full flex-col gap-4 rounded-md p-4 shadow-section ${className}`}
 		>
 			<h1 className="font-semibold font-title text-default lg:text-3xl">
 				{title}

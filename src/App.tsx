@@ -45,6 +45,7 @@ export function App() {
 					</div>
 
 					<div className="flex gap-2">
+						<Button onClick={() => openModal("income")}>Resetar dados</Button>
 						<Button onClick={() => openModal("income")}>
 							Orçamento do mês
 						</Button>

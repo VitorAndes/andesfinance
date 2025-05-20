@@ -32,11 +32,12 @@ export function CardTransaction({
 							<span className="font-title text-default/70">
 								{type === "expense" ? "Compra realizada" : "Pagamento recebido"}
 							</span>
-							<h1 className="font-secondary font-semibold text-primary">
+							<h1 className="font-title font-semibold text-default md:text-lg">
 								{local} - {tag}
 							</h1>
 						</div>
 						<span className="font-secondary text-default/70">
+							{type === "expense" ? "pago em: " : "recebido em: "}
 							{useNormalizeDate(paymentDate)}
 						</span>
 					</div>
@@ -44,7 +45,7 @@ export function CardTransaction({
 						className={`flex flex-col items-end gap-2 ${paymentMethod ? "justify-between" : "justify-end"}`}
 					>
 						{paymentMethod && (
-							<p className="font-title text-default">{paymentMethod}</p>
+							<p className="font-secondary text-default">{paymentMethod}</p>
 						)}
 						<span
 							className={`font-secondary font-semibold text-default ${type === "expense" && "line-through"}`}
