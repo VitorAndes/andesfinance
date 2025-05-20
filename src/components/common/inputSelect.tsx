@@ -27,13 +27,11 @@ export function InputSelect({
 				{label}
 			</label>
 			<select
+				id={htmlFor}
 				{...props}
 				className="h-12 w-full rounded-md border border-primary/50 px-2 text-xs focus:outline-none font-secondary"
-				defaultValue={""}
 			>
-				<option value="" disabled>
-					Escolha uma opção
-				</option>
+				<option value="">Escolha uma opção</option>
 
 				{options?.map((op) => {
 					return (

@@ -126,8 +126,8 @@ export function TableClient() {
 					onClick={resetarFiltro}
 					type="button"
 				>
-					<ListRestart />
 					Limpar filtros
+					<ListRestart />
 				</button>
 			</div>
 

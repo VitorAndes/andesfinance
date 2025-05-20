@@ -17,6 +17,7 @@ export function Input({ htmlFor, label, icon, errors, ...props }: InputProps) {
 			</label>
 			<div className="flex items-center gap-2">
 				<input
+					id={htmlFor}
 					{...props}
 					className="h-12 w-full rounded-md border border-primary/50 px-2 focus:outline-none placeholder:font-medium text-default/60"
 				/>

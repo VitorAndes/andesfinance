@@ -53,7 +53,7 @@ export function CardInvoices() {
 									)}
 								</div>
 								<span className="font-secondary font-semibold text-default ">
-									R${invoice.amount.toLocaleString("pt-BR")}
+									R${(invoice.amount / 100).toFixed(2)}
 								</span>
 							</div>
 						</div>

@@ -10,9 +10,11 @@ export function useQueryAmount() {
 	const expenses = useLiveQuery(() => db.expenses.toArray());
 	const invoices = useLiveQuery(() => db.invoices.toArray());
 
-	const incomesAmount =
-		(Number(formatAmount(incomes)) - Number(formatAmount(expenses))) / 100;
-	const expensesAmount = formatAmount(expenses) / 100;
+	const totalIncomes = formatAmount(incomes);
+	const totalExpenses = formatAmount(expenses);
+
+	const incomesAmount = (totalIncomes - totalExpenses) / 100;
+	const expensesAmount = totalExpenses / 100;
 	const invoicesAmount = formatAmount(invoices) / 100;
 
 	return { incomesAmount, expensesAmount, invoicesAmount };

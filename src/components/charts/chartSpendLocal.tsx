@@ -11,12 +11,12 @@ import {
 
 type chartDataType = {
 	name: string;
-	cost: number;
+	total: number;
 };
 
 const chartConfig = {
 	desktop: {
-		label: "é",
+		label: "R$",
 		color: "var(--color-primary)",
 	},
 } satisfies ChartConfig;
@@ -54,9 +54,9 @@ export function ChartSpendLocal() {
 		);
 
 		const formattedChartData = Object.entries(groupedByCategory).map(
-			([category, cost]) => ({
+			([category, total]) => ({
 				name: category,
-				cost,
+				total: total,
 			}),
 		);
 
@@ -79,15 +79,18 @@ export function ChartSpendLocal() {
 					tickLine={false}
 					tickMargin={10}
 					axisLine={false}
-					tickFormatter={(value) => value.slice(0, 4)}
+					// tickFormatter={(value) => value.slice(0, 4)}
 				/>
-				<ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-				<Bar dataKey="cost" fill="var(--color-primary)" radius={8}>
+				<ChartTooltip
+					cursor={false}
+					content={<ChartTooltipContent indicator="line" />}
+				/>
+				<Bar dataKey="total" fill="var(--color-primary)" radius={8}>
 					<LabelList
 						position="top"
 						offset={12}
 						className="fill-default font-semibold"
-						fontSize={12}
+						fontSize={16}
 					/>
 				</Bar>
 			</BarChart>

@@ -78,7 +78,7 @@ export function CategoryTab() {
 					errors={errors.categoryName?.message}
 				/>
 			</form>
-			<div className="mt-5 flex max-h-96 flex-col gap-3 overflow-y-auto">
+			<div className="mt-5 flex  max-h-52 md:max-h-96 flex-col gap-3 overflow-y-auto">
 				{categorys?.map(({ categoryId, name }) => {
 					return (
 						<Category

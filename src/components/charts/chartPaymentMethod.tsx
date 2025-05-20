@@ -87,7 +87,7 @@ export function ChartPaymentMethod() {
 				<PieChart>
 					<ChartTooltip
 						cursor={false}
-						content={<ChartTooltipContent hideLabel />}
+						content={<ChartTooltipContent hideLabel indicator="dot" />}
 					/>
 					<Pie
 						data={chartData}

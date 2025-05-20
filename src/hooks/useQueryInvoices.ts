@@ -8,14 +8,14 @@ function mapInvoice(invoice: Invoice): Invoice {
 		product: invoice.product,
 		category: invoice.category,
 
-		amount: invoice.amount / 100,
+		amount: invoice.amount,
 		transaction_date: invoice.transaction_date,
 		payment_status: invoice.payment_status,
 	};
 }
 
 export function useQueryInvoices() {
-	const allInvoices = useLiveQuery(() => db.invoices.toArray());
+	const allInvoices = useLiveQuery(async () => await db.invoices.toArray());
 
 	const invoice = allInvoices?.map(mapInvoice) ?? [];
 

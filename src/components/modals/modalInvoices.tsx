@@ -1,22 +1,90 @@
+import { db } from "@/db/dexie";
+import { useMaskAmount } from "@/hooks/useMaskAmount";
 import type { Invoice } from "@/types/types";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { BadgeCheck, Receipt } from "lucide-react";
-import { type FormEvent, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 import { Input } from "../common/input";
 
 interface ModalInvoicesProps {
 	invoice: Invoice;
 }
 
-export function ModalInvoices({ invoice }: ModalInvoicesProps) {
-	const inputRef = useRef<HTMLInputElement>(null);
-	function handleSubmit(e: FormEvent) {
-		e.preventDefault();
-		// const paidAmount = inputRef.current?.value;
+const schemaInvoiceForm = z.object({
+	amount: z
+		.number()
+		.int()
+		.nonnegative()
+		.positive({ message: "o valor deve ser maior que zero" }),
+});
 
-		if (inputRef.current) {
-			inputRef.current.value = "";
+type createInvoiceForm = z.infer<typeof schemaInvoiceForm>;
+
+export function ModalInvoices({ invoice }: ModalInvoicesProps) {
+	const {
+		reset,
+		watch,
+		handleSubmit,
+		setValue,
+		formState: { errors },
+	} = useForm<createInvoiceForm>({
+		resolver: zodResolver(schemaInvoiceForm),
+		defaultValues: {
+			amount: 0,
+		},
+	});
+
+	const invoiceAmount = watch("amount");
+
+	const { handleChangeMaskAmount, maskAmount } = useMaskAmount(
+		invoiceAmount,
+		(amount) => setValue("amount", amount),
+	);
+
+	const onSubmitInvoiceForm = async ({ amount }: createInvoiceForm) => {
+		try {
+			if (amount > invoice.amount) {
+				toast.warning("Valor pago maior que o valor da fatura.");
+				return;
+			}
+
+			const newAmountInCents = invoice.amount - amount;
+
+			await db.invoices.update(invoice.invoiceId, {
+				amount: newAmountInCents,
+				...(newAmountInCents === 0 && { payment_status: "paid" }),
+			});
+
+			const existingExpense = await db.expenses
+				.where({ expenseId: invoice.invoiceId })
+				.first();
+
+			if (existingExpense) {
+				await db.expenses.update(existingExpense.expenseId, {
+					amount: existingExpense.amount + amount,
+				});
+			} else {
+				await db.expenses.add({
+					amount: amount,
+					category: invoice.category,
+					transaction_date: invoice.transaction_date,
+					payment_type: "crédito",
+					expenseId: invoice.invoiceId,
+					product: invoice.product,
+				});
+			}
+
+			invoice.amount = newAmountInCents;
+
+			toast.success(`Fatura paga com sucesso: ${invoice.product}`);
+		} catch (error) {
+			toast.error(`Erro ao atualizar fatura: ${error}`);
 		}
-	}
+
+		reset();
+	};
 
 	return (
 		<>
@@ -38,7 +106,9 @@ export function ModalInvoices({ invoice }: ModalInvoicesProps) {
 					</span>
 					<span className="flex items-center justify-between">
 						<p className="font-medium font-secondary ">Valor da fatura</p>
-						<p className=" font-secondary font-semibold ">R${invoice.amount}</p>
+						<p className=" font-secondary font-semibold ">
+							R${(invoice.amount / 100).toFixed(2)}
+						</p>
 					</span>
 					<span className="flex items-center justify-between">
 						<p className="font-medium font-secondary ">Vencimento da fatura</p>
@@ -58,13 +128,14 @@ export function ModalInvoices({ invoice }: ModalInvoicesProps) {
 				</div>
 			</div>
 
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit(onSubmitInvoiceForm)}>
 				<Input
-					ref={inputRef}
 					htmlFor={"invoicePayment"}
 					label={"Quanto deseja pagar?"}
 					icon={<BadgeCheck />}
-					onChange={(e) => e.currentTarget.value}
+					value={maskAmount}
+					errors={errors.amount?.message}
+					onChange={handleChangeMaskAmount}
 				/>
 			</form>
 		</>
