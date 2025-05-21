@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Toaster } from "sonner";
@@ -22,6 +23,7 @@ createRoot(document.getElementById("root")!).render(
 				/>
 
 				<App />
+				<Analytics />
 			</ModalProvider>
 		</SidebarProvider>
 	</StrictMode>,

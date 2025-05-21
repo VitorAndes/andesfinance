@@ -39,6 +39,7 @@ export function App() {
 						>
 							<SidebarClose className="w-full h-full" />
 						</button>
+
 						<h1 className="font-semibold font-title text-default text-lg lg:text-3xl">
 							Dashboard
 						</h1>
