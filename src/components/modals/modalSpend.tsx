@@ -176,7 +176,7 @@ export function ModalSpend() {
 					type="date"
 					{...register("expenseTransactionDate")}
 					htmlFor="paymentDate"
-					label="Data do pagamento"
+					label="Data do pagamento / vencimento"
 					errors={errors.expenseTransactionDate?.message}
 				/>
 				<div className="flex place-content-end gap-4 mt-5">

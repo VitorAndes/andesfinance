@@ -1,11 +1,10 @@
 import { useModal } from "@/context/modalContext";
 import {
-	Coffee,
 	Github,
 	LayoutDashboard,
 	Linkedin,
 	Settings,
-	SidebarClose,
+	SidebarClose
 } from "lucide-react";
 
 import { useSideBar } from "@/context/sidebarContext";
@@ -57,15 +56,6 @@ export function SideBar() {
 						Configurações
 					</button>
 				</div>
-
-				<button
-					type="button"
-					disabled
-					className="w-full flex-none bg-violet-600 py-3 flex justify-center rounded-md text-secondary font-title font-semibold gap-2 shadow-inner shadow-default"
-				>
-					Buy me a coffee <Coffee />
-				</button>
-
 				<div className="flex gap-4">
 					<SocialLink
 						target="_blank"

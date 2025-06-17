@@ -1,6 +1,5 @@
 import { ChartPaymentMethod } from "@/components/charts/chartPaymentMethod";
 import { ChartSpendLocal } from "@/components/charts/chartSpendLocal";
-import { ChartTransactions } from "@/components/charts/chartTransactions";
 import { Button } from "@/components/common/button";
 import { CardInvoices } from "@/components/common/cardInvoices";
 import { CardModal } from "@/components/common/cardModal";
@@ -33,7 +32,7 @@ export function App() {
 					<div className="flex gap-2 items-center">
 						<button
 							aria-label="close modal button"
-							className=" size-11 items-center justify-center p-1 text-default flex"
+							className=" size-11 items-center justify-center p-1 text-default flex cursor-pointer"
 							type="button"
 							onClick={() => setIsSidebarOpen(!isSidebarOpen)}
 						>
@@ -79,11 +78,6 @@ export function App() {
 
 						<CardSection title={"Métodos de pagamento"} className="col-span-1">
 							<ChartPaymentMethod />
-						</CardSection>
-					</section>
-					<section className="h-96 w-full">
-						<CardSection title={"Gráfico de Transações"}>
-							<ChartTransactions />
 						</CardSection>
 					</section>
 

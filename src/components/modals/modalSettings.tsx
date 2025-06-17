@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { CategoryTab } from "./categoryTab";
+import { UserDataTab } from "./userDataTab";
 
 interface tabsProps {
 	tab: string;
 }
 
-const Tabs: tabsProps[] = [{ tab: "categorias" }];
+const Tabs: tabsProps[] = [{ tab: "categorias" }, {tab:"controle de dados"}];
 
 export function ModalSettings() {
 	const [activeTab, setActiveTab] = useState<tabsProps>(Tabs[0]);
@@ -24,7 +25,7 @@ export function ModalSettings() {
 						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 						key={i}
 						type="button"
-						className={`${activeTab === Tabs[i] ? "bg-primary text-secondary" : "border border-secondary"} py-3 w-24 rounded-md font-secondary font-semibold text-sm hover:bg-primary cursor-pointer hover:text-secondary transition-all `}
+						className={`${activeTab === Tabs[i] ? "bg-primary text-secondary" : "border border-secondary"} p-3 w-38 rounded-md font-secondary font-semibold text-sm hover:bg-primary cursor-pointer hover:text-secondary transition-all `}
 						onClick={() => setActiveTab(Tabs[i])}
 					>
 						{tab}
@@ -33,6 +34,7 @@ export function ModalSettings() {
 			</nav>
 
 			<div className="h-fit ">{activeTab === Tabs[0] && <CategoryTab />}</div>
+			<div className="h-fit ">{activeTab === Tabs[1] && <UserDataTab/>}</div>
 		</>
 	);
 }
