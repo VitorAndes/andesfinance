@@ -21,7 +21,7 @@ const chartConfig = {
 	},
 } satisfies ChartConfig;
 
-export function ChartSpendLocal() {
+export default function ChartSpendLocal() {
 	const invoices = useLiveQuery(async () => await db.invoices.toArray());
 	const expenses = useLiveQuery(async () => await db.expenses.toArray());
 
@@ -63,8 +63,10 @@ export function ChartSpendLocal() {
 		setChartData(formattedChartData);
 	}, [expenses, invoices]);
 
-	return (
-		<ChartContainer className="min-h-[250px]" config={chartConfig}>
+
+	return (	
+		<>
+			{!invoices?.length && !expenses?.length ? <picture className="flex flex-col items-center m-auto"><img src="/finance-analysis.svg" alt="imagem de pessoa analisando as finanças" loading="lazy" height={100} width={300}/><p className="font-secondary">Insira despesas para visualizar seus dados.</p> </picture> :<ChartContainer className="min-h-[250px] transition-all" config={chartConfig}>
 			<BarChart
 				accessibilityLayer
 				data={chartData}
@@ -94,6 +96,7 @@ export function ChartSpendLocal() {
 					/>
 				</Bar>
 			</BarChart>
-		</ChartContainer>
+		</ChartContainer>}
+		</>
 	);
 }

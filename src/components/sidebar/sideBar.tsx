@@ -16,7 +16,7 @@ export function SideBar() {
 	const { isSidebarOpen, setIsSidebarOpen } = useSideBar();
 
 	return (
-		<div className="relative h-dvh">
+		<div className="h-dvh absolute z-20 lg:static">
 			<aside
 				className={`flex h-full flex-col gap-5 bg-default  transition-all lg:h-screen ${
 					isSidebarOpen
@@ -30,7 +30,7 @@ export function SideBar() {
 					</h1>
 					<button
 						aria-label="toggle modal button"
-						className="flex size-11 items-center justify-center p-1 text-secondary md:hidden"
+						className="flex size-11 items-center justify-center p-1 text-secondary lg:hidden cursor-pointer"
 						type="button"
 						onClick={() => setIsSidebarOpen(!isSidebarOpen)}
 					>

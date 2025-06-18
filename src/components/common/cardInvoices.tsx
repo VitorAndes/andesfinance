@@ -4,16 +4,14 @@ import { useQueryInvoices } from "@/hooks/useQueryInvoices";
 import { Receipt } from "lucide-react";
 import { Button } from "./button";
 
-export function CardInvoices() {
+export default function CardInvoices() {
 	const { openModal } = useModal();
 
 	const invoices = useQueryInvoices();
 
-	if (invoices.length === 0) return "Nenhuma fatura encontrada";
-
 	return (
 		<>
-			{invoices.map((invoice) => {
+			{!invoices.length ? <picture className="flex flex-col items-center m-auto"><img src="/online-payment.svg" alt="imagem de fatura a ser paga" loading="lazy" height={100} width={300}/><p className="font-secondary">Nenhuma fatura encontrada.</p> </picture>  : <>{invoices.map((invoice) => {
 				return (
 					<div
 						key={invoice.invoiceId}
@@ -59,7 +57,7 @@ export function CardInvoices() {
 						</div>
 					</div>
 				);
-			})}
+			})}</> }
 		</>
 	);
 }

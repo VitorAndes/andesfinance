@@ -13,7 +13,7 @@ export function NavLink({ navIcon, navTitle, navRoute }: NavLinkProps) {
 	return (
 		<a
 			className={
-				" flex w-full gap-2 rounded-md p-2 font-secondary text-secondary transition-all hover:bg-accent "
+				" flex w-full bg-primary gap-2 rounded-md p-3 font-secondary text-secondary transition-all hover:bg-accent font-semibold"
 			}
 			href={navRoute}
 		>

@@ -21,7 +21,7 @@ const transactionTypeOptions = [
 	},
 ] satisfies { name: string }[];
 
-export function TableClient() {
+export default function TableClient() {
 	const { category } = useQueryCategory();
 
 	const { transactions } = useQueryTransactions();
@@ -135,11 +135,7 @@ export function TableClient() {
 				<div className="flex w-full flex-col gap-2">
 					<div className="flex flex-col gap-2">
 						{paginatedItems.length === 0 ? (
-							<div className="flex ">
-								<div className="flex-1 py-4 text-center font-secondary">
-									Nenhuma transação encontrada
-								</div>
-							</div>
+							<picture className="flex flex-col items-center m-auto"><img src="/transaction.svg" alt="imagem de pessoas fazendo uma transação" loading="lazy" height={100} width={300}/><p className="font-secondary">Nenhuma transação encontrada</p> </picture> 
 						) : (
 							paginatedItems.map((transaction) =>
 								transaction.type === "compras" ? (

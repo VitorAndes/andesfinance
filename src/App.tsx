@@ -1,7 +1,4 @@
-import { ChartPaymentMethod } from "@/components/charts/chartPaymentMethod";
-import { ChartSpendLocal } from "@/components/charts/chartSpendLocal";
 import { Button } from "@/components/common/button";
-import { CardInvoices } from "@/components/common/cardInvoices";
 import { CardModal } from "@/components/common/cardModal";
 import { CardMoney } from "@/components/common/cardMoney";
 import { CardSection } from "@/components/common/cardSection";
@@ -12,11 +9,18 @@ import {
 	CreditCard,
 	SidebarClose,
 } from "lucide-react";
+import { Suspense, useEffect } from "react";
+import { Loading } from "./components/common/loading";
 import { SideBar } from "./components/sidebar/sideBar";
-import { TableClient } from "./components/table/table";
 import { useModal } from "./context/modalContext";
 import { useSideBar } from "./context/sidebarContext";
 import { useQueryAmount } from "./hooks/useQueryAmount";
+import { lazyWithPreload } from "./lib/utils/lazyWithPreload";
+
+const LazyChartSpendLocal = lazyWithPreload(() => import("@/components/charts/chartSpendLocal"))
+const LazyChartPaymentMethod = lazyWithPreload(() => import("@/components/charts/chartPaymentMethod"))
+const LazyCardInvoices = lazyWithPreload(() => import("@/components/common/cardInvoices"))
+const LazyTableClient = lazyWithPreload(()=> import("@/components/table/table"))
 
 export function App() {
 	const { openModal } = useModal();
@@ -24,6 +28,13 @@ export function App() {
 
 	const { expensesAmount, incomesAmount, invoicesAmount } = useQueryAmount();
 
+	
+	useEffect(() => {
+		LazyChartSpendLocal.preload()
+		LazyChartPaymentMethod.preload()
+		LazyCardInvoices.preload()
+		LazyTableClient.preload()
+	  }, [])
 	return (
 		<div className="flex min-h-screen">
 			<SideBar />
@@ -73,11 +84,15 @@ export function App() {
 					</section>
 					<section className="gap-4 lg:grid lg:grid-cols-3">
 						<CardSection title={"Lugares gastos"} className="col-span-2">
-							<ChartSpendLocal />
+							<Suspense fallback={<Loading/>}>
+								<LazyChartSpendLocal />
+							</Suspense>
 						</CardSection>
 
 						<CardSection title={"Métodos de pagamento"} className="col-span-1">
-							<ChartPaymentMethod />
+							<Suspense fallback={<Loading/>}>
+							<LazyChartPaymentMethod/>
+							</Suspense>
 						</CardSection>
 					</section>
 
@@ -86,10 +101,15 @@ export function App() {
 							className="lg:col-span-2"
 							title={"Relátorio de transações"}
 						>
-							<TableClient />
+							<Suspense fallback={<Loading/>}>
+
+							<LazyTableClient />
+							</Suspense>
 						</CardSection>
 						<CardSection className="lg:col-span-1" title={"Faturas"}>
-							<CardInvoices />
+							<Suspense fallback={<Loading/>}>
+								<LazyCardInvoices/>
+							</Suspense>
 						</CardSection>
 					</section>
 				</main>

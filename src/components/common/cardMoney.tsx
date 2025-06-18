@@ -17,7 +17,7 @@ export function CardMoney(CardMoney: CardMoneyProps) {
 							style: "currency",
 							currency: "BRL",
 						}).format(CardMoney.value)
-					: 0}
+					: "R$0"}
 			</p>
 		</div>
 	);

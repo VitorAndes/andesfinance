@@ -32,7 +32,7 @@ const chartConfig = {
 	},
 } satisfies ChartConfig;
 
-export function ChartPaymentMethod() {
+export default function ChartPaymentMethod() {
 	const invoices = useLiveQuery(async () => await db.invoices.toArray());
 	const expenses = useLiveQuery(async () => await db.expenses.toArray());
 
@@ -79,7 +79,8 @@ export function ChartPaymentMethod() {
 	const totalSpend = chartData.reduce((acc, curr) => acc + curr.cost, 0);
 
 	return (
-		<div className="flex h-full flex-col items-center justify-center">
+		<>
+		{!invoices?.length && !expenses?.length ? <picture className="flex flex-col items-center m-auto"><img src="/credit-card.svg" alt="imagem de cartões de pagamento" loading="lazy" height={100} width={300}/><p className="font-secondary">Insira despesas para visualizar seus dados.</p> </picture> : <div className="flex h-full flex-col items-center justify-center">
 			<ChartContainer
 				config={chartConfig}
 				className="aspect-square min-h-[250px] w-full xl:min-h-[350px]"
@@ -133,6 +134,7 @@ export function ChartPaymentMethod() {
 					/>
 				</PieChart>
 			</ChartContainer>
-		</div>
+		</div>}
+		</>
 	);
 }
