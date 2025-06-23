@@ -70,7 +70,7 @@ export function ModalInvoices({ invoice }: ModalInvoicesProps) {
         await db.expenses.add({
           amount: amount,
           category: invoice.category,
-          transaction_date: invoice.transaction_date,
+          transaction_date: String(new Date()),
           payment_type: "crédito",
           expenseId: invoice.invoiceId,
           product: invoice.product,

@@ -5,7 +5,8 @@ export function useNormalizeDate(date: string | Date) {
 			: new Date(date);
 
 	return new Intl.DateTimeFormat("pt-BR", {
+		timeZone:"UTC",
 		month: "long",
-		day: "2-digit",
+		day: "numeric",
 	}).format(parsedDate);
 }
